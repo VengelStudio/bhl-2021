@@ -1,0 +1,14 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "C:\\Users\\Arach\\Documents\\template\\server\\src\\logs\\info\\.c2c2e640f57059176afdb91a6595c0a98d16ac7f-audit.json",
+    "files": [
+        {
+            "date": 1616355195519,
+            "name": "C:\\Users\\Arach\\Documents\\template\\server\\src\\logs\\info\\2021-03-21.log",
+            "hash": "a5e9aaa11f7ab31b0128a4fc2c26cb79"
+        }
+    ]
+}
