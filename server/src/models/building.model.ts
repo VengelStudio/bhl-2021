@@ -3,7 +3,7 @@ import { TimeManager } from './time-manager.model';
 export class Building {
   public test_incremented_number = 0;
 
-  public tick(newTime: TimeManager) {
+  public tick(newTime: Date) {
     // use newTime to calculate prices etc.
     this.test_incremented_number = this.test_incremented_number + 1;
   }
