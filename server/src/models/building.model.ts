@@ -45,32 +45,56 @@ export class Building {
   public waterStorage: WaterStorage = new WaterStorage();
   public powerExchange: PowerExchange = new PowerExchange();
 
+  public getConsumption() {
+
+    this.rooms.forEach(room => { (room.is_heated === true) ? powerConsumption += room.heating_power : powerConsumption -= room.heating_power});
+    return powerConsumption;
+  }
+
+
   public recalculate(newTime: Date) {
     const sensorData = this.sensors.getValues(newTime);
 
     this.rooms.forEach(room => room.setTargetTemperature(getTargetTemperature(newTime)));
 
-    const panelEfficiency = this.panels.getEfficiency(newTime, sensorData.outside.clearSkyRatio);
+    const panelEfficiency = this.panels.getEfficiency(newTime, this.sensors.clearSkyRatio);
+    
+    this.heatRooms();
+    
 
     console.table({
-      time: newTime.toISOString(),
-      outsideTemperature: sensorData.outside.temperature,
-      outsideInsolation: sensorData.outside.insolation,
-      outsideClearSkyRatio: sensorData.outside.clearSkyRatio,
-      recuperationIncomingTemperature: sensorData.recuperation.incomingTemperature,
-      panelEfficiency,
-      targetTemperature: getTargetTemperature(newTime),
-    });
+      room1: this.rooms[0].is_heated,
+      room2: this.rooms[1].is_heated,
+      room3: this.rooms[2].is_heated,
+      room4: this.rooms[3].is_heated,
+      room5: this.rooms[4].is_heated,
+      room6: this.rooms[5].is_heated,
+      room7: this.rooms[6].is_heated,
+
+    })
+
+    // console.table({
+    //   time: newTime.toISOString(),
+    //   outsideTemperature: this.sensors.outsideTemperature,
+    //   panelEfficiency,
+    //   targetTemperature: getTargetTemperature(newTime),
+    // });
   }
+  
+  public differenceCheck(room: Room){
+      let differenceCheck = Math.abs(room.current_temperature - room.target_temperature);
+      return differenceCheck < 0.1;
 
-  public heatARoom() {
-
-    this.
+  } 
+  public heatRooms() {
+    this.rooms.forEach(room => {this.differenceCheck(room) ? room.is_heated = true : room.is_heated = false});
+  
   }
 
 }
 
 // starting values here
 const defaultBuilding: Building = new Building();
+let powerConsumption = 0;
 
 export default defaultBuilding;
