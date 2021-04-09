@@ -10,7 +10,7 @@ export class Panels {
 
     if (true) {
       // todo add conditions
-      return 0;
+      return Math.random() * 5;
     }
   }
 }
