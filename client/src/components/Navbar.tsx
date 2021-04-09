@@ -22,6 +22,11 @@ export const Navbar: React.FC = () => {
       ? `0${new Date(response.time).getUTCMinutes()}`
       : new Date(response.time).getUTCMinutes();
 
+  let clearSkyRatio =
+    Object.keys(response).length !== 0
+      ? response.building.sensors.outside.clearSkyRatio
+      : "Loading..";
+
   return (
     <div className="navbar">
       <div className="navbar__box">
@@ -34,7 +39,7 @@ export const Navbar: React.FC = () => {
       </div>
       <div className="navbar__box">
         <p>Cloud cover:</p>
-        <p className="navbar__cloud">60%</p>
+        <p className="navbar__cloud">{clearSkyRatio}</p>
       </div>
     </div>
   );

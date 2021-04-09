@@ -14,6 +14,7 @@ export const MainPage: React.FC = () => {
       fetch("http://localhost:5000/building", { method: "GET" })
         .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           setResponse(data);
         });
     }, 1000);
@@ -79,7 +80,10 @@ export const MainPage: React.FC = () => {
               <div className="devices-wrapper">
                 <div className="device-column">
                   <DevicePanel title="Photovoltaic panels">
-                    <p>chuuuj</p>
+                    <SingleData
+                      label={"Wydajność"}
+                      value={response.building.panels.efficiency}
+                    />
                   </DevicePanel>
                   <DevicePanel title="Battery">
                     <p>chuuuj</p>
