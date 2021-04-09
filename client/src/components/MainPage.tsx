@@ -25,6 +25,7 @@ export const MainPage: React.FC = () => {
   );
 
   let waterData = response?.building?.waterStorage;
+  console.log(waterData);
 
   return (
     <div>
@@ -56,21 +57,24 @@ export const MainPage: React.FC = () => {
                   />
                 </DevicePanel>
                 <DevicePanel title="Water storage">
-                  {Object.keys(waterData).map(function (keyName, keyIndex) {
+                  {Object.keys(waterData).map(function (key) {
+                    let translatedKey;
+
                     function translate() {
-                      keyName = keyName === "size" ? "Rozmiar" : keyName;
-                      keyName =
-                        keyName === "heating_power" ? "Moc grzewcza" : keyName;
-                      keyName =
-                        keyName === "heating_rate_per_minute"
-                          ? "Zużycie energii na minutę"
-                          : keyName;
+                      if (key === "size") {
+                        translatedKey = "Size";
+                      } else if (key === "heating_power") {
+                        translatedKey = "Heating power";
+                      } else if (key === "heating_rate_per_minute") {
+                        translatedKey = "Heating rate per minute";
+                      }
                     }
                     translate();
                     return (
-                      <span className="data-line" key={keyName}>
-                        <span>{keyName}</span>: {keyIndex}
-                      </span>
+                      <SingleData
+                        label={translatedKey}
+                        value={waterData[key]}
+                      />
                     );
                   })}
                 </DevicePanel>
