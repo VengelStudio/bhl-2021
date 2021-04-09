@@ -60,18 +60,16 @@ export class Building {
    // const panelEfficiency = this.panels.getEfficiency(newTime, this.sensors.clearSkyRatio);
     
     this.heatRooms();
+    console.log(this.sensors.outside.temperature);
     
-
     console.table({
-      room1: this.rooms[0].is_heated,
-      room2: this.rooms[1].is_heated,
-      room3: this.rooms[2].is_heated,
-      room4: this.rooms[3].is_heated,
-      room5: this.rooms[4].is_heated,
-      room6: this.rooms[5].is_heated,
-      room7: this.rooms[6].is_heated,
-
+      room1: [],
+   
     });
+    console.table([0,1,2,3,4,5,6].map(id=> ({is_heated:this.rooms[id].is_heated, current_temperature:this.rooms[id].current_temperature, 
+      target_temperature: this.rooms[id].target_temperature, differenceCheck2: this.differenceCheck2(this.rooms[id]), newTime})))
+
+    console.log(this.differenceCheck(this.rooms[0]));
 
     // console.table({
     //   time: newTime.toISOString(),
@@ -83,12 +81,57 @@ export class Building {
   
   public differenceCheck(room: Room){
       let differenceCheck = Math.abs(room.current_temperature - room.target_temperature);
-      return differenceCheck < 0.1;
 
+      return differenceCheck < 1;
   } 
+
+  public differenceCheck2(room: Room){
+    let differenceCheck = room.current_temperature - room.target_temperature;
+
+    return differenceCheck;
+} 
+
   public heatRooms() {
-    this.rooms.forEach(room => {this.differenceCheck(room) ? room.is_heated = true : room.is_heated = false});
+    this.rooms.forEach(room => {!this.differenceCheck(room) ? room.is_heated = true : room.is_heated = false});
+    this.rooms.forEach(room => {room.is_heated ? room.current_temperature += 1/6 : room.current_temperature += this.temperatureDecrease(this.sensors.outside.temperature) })
   
+  }
+
+  public temperatureDecrease(temperature : number){
+
+    let temperatureDecrease = 0;
+
+    switch(true)
+  {
+    case temperature < -20:
+      temperatureDecrease = -(10/15);
+      break;
+    case temperature < -10:
+      temperatureDecrease = -(1/3);
+      break;
+
+    case temperature < -5:
+      temperatureDecrease = -(1/6);
+      break;
+
+    case temperature < 0:
+      temperatureDecrease = -(1/12);
+      break;
+
+    case temperature < 5:
+      temperatureDecrease = -(1/18);
+      break;
+    case temperature < 15:
+      temperatureDecrease = -(1/24);
+      break;
+
+    case temperature < 20:
+      temperatureDecrease = -(1/36);
+      break;
+
+  }
+
+  return temperatureDecrease;
   }
 
 }
