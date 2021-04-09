@@ -38,10 +38,12 @@ export class Building {
   public sensors: Sensors = new Sensors(20.1, 0.3);
   public panels: Panels = new Panels();
 
-  public recalculate(newTime: Date) {
-    // use newTime to calculate prices etc.
-
+  private randomizeVariables() {
     this.sensors.refresh();
+  }
+
+  public recalculate(newTime: Date) {
+    this.randomizeVariables();
 
     const panelEfficiency = this.panels.getEfficiency(newTime, this.sensors.clearSkyRatio);
 
