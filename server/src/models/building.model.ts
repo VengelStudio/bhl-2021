@@ -1,5 +1,6 @@
 import { Battery } from './battery.model';
 import { Panels } from './panels.model';
+import { PowerExchange } from './power-exchange.model';
 import { Room } from './room.model';
 import { Sensors } from './sensors.model';
 import { WaterStorage } from './water-storage.model';
@@ -43,6 +44,7 @@ export class Building {
   public panels: Panels = new Panels();
   public battery: Battery = new Battery(7, 2);
   public waterStorage: WaterStorage = new WaterStorage();
+  public powerExchange: PowerExchange = new PowerExchange();
 
   private randomizeVariables() {
     this.sensors.refresh();
