@@ -5,12 +5,9 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
 import compression from 'compression';
-import swaggerUi from 'swagger-ui-express';
-import swaggerJSDoc from 'swagger-jsdoc';
 import Routes from './interfaces/routes.interface';
-import errorMiddleware from './middlewares/error.middleware';
-import { logger, stream } from './utils/logger';
 
+const SimulationSingleton = require('./simulation/main');
 class App {
   public app: express.Application;
   public port: string | number;
@@ -23,14 +20,17 @@ class App {
 
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
-    this.initializeSwagger();
-    this.initializeErrorHandling();
   }
 
   public listen() {
     this.app.listen(this.port, () => {
-      logger.info(`🚀 App listening on the port ${this.port}`);
+      console.log(`🚀 App listening on the port ${this.port}`);
     });
+
+    setInterval(() => {
+      const simulation = SimulationSingleton.getInstance();
+      simulation.tick();
+    }, 500);
   }
 
   public getServer() {
@@ -39,10 +39,8 @@ class App {
 
   private initializeMiddlewares() {
     if (this.env === 'production') {
-      this.app.use(morgan('combined', { stream }));
       this.app.use(cors({ origin: true, credentials: true }));
     } else if (this.env === 'development') {
-      this.app.use(morgan('dev', { stream }));
       this.app.use(cors({ origin: true, credentials: true }));
     }
 
@@ -58,26 +56,6 @@ class App {
     routes.forEach(route => {
       this.app.use('/', route.router);
     });
-  }
-
-  private initializeSwagger() {
-    const options = {
-      swaggerDefinition: {
-        info: {
-          title: 'REST API',
-          version: '1.0.0',
-          description: 'Example docs',
-        },
-      },
-      apis: ['swagger.yaml'],
-    };
-
-    const specs = swaggerJSDoc(options);
-    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-  }
-
-  private initializeErrorHandling() {
-    this.app.use(errorMiddleware);
   }
 }
 
