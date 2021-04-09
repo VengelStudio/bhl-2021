@@ -4,6 +4,7 @@ export class Room {
   public target_temperature = 70;
   public heating_power: number;
   public heating_rate_per_tick: number;
+  public is_heated: boolean;
 
   constructor({ id, heatingPower }: { id: number; heatingPower: number }) {
     this.id = id;
