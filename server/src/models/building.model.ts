@@ -1,13 +1,10 @@
+import { isBetween } from '../utils/is-between';
 import { Battery } from './battery.model';
 import { Panels } from './panels.model';
 import { PowerExchange } from './power-exchange.model';
 import { Room } from './room.model';
 import { Sensors } from './sensors.model';
 import { WaterStorage } from './water-storage.model';
-
-const isBetween = (value: number, { a, b }: { a: number; b: number }) => {
-  return value >= Math.min(a, b) && value <= Math.max(a, b);
-};
 
 const getTargetTemperature = (time: Date) => {
   const isHoliday = isBetween(time.getUTCMonth() + 1, { a: 7, b: 9 });
