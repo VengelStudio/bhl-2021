@@ -2,6 +2,7 @@ import { Battery } from './battery.model';
 import { Panels } from './panels.model';
 import { Room } from './room.model';
 import { Sensors } from './sensors.model';
+import { WaterStorage } from './water-storage.model';
 
 const isBetween = (value: number, { a, b }: { a: number; b: number }) => {
   return value >= Math.min(a, b) && value <= Math.max(a, b);
@@ -41,6 +42,7 @@ export class Building {
   public sensors: Sensors = new Sensors(20.1, 0.3);
   public panels: Panels = new Panels();
   public battery: Battery = new Battery(7, 2);
+  public waterStorage: WaterStorage = new WaterStorage();
 
   private randomizeVariables() {
     this.sensors.refresh();
