@@ -1,15 +1,25 @@
-import { TimeManager } from './time-manager.model';
+export class Sensors {
+  public outsideTemperature;
 
-export class Building {
-  public test_incremented_number = 0;
-
-  public tick(newTime: Date) {
-    // use newTime to calculate prices etc.
-    this.test_incremented_number = this.test_incremented_number + 1;
+  constructor(initialTemperature: number) {
+    this.outsideTemperature = initialTemperature;
   }
 
-  public getTestIncrementedNumber() {
-    return this.test_incremented_number;
+  public refresh() {
+    // shifts current temperature by a random number between -1 and 1
+    const shift = Math.random() * 2 - 1;
+    this.outsideTemperature += shift;
+  }
+}
+
+export class Building {
+  public rooms: any[] = [];
+  public sensors: Sensors = new Sensors(20.1);
+
+  public recalculate(newTime: Date) {
+    // use newTime to calculate prices etc.
+
+    this.sensors.refresh();
   }
 }
 
