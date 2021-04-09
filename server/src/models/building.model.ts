@@ -1,38 +1,11 @@
+import { Battery } from './battery.model';
+import { Panels } from './panels.model';
 import { Room } from './room.model';
+import { Sensors } from './sensors.model';
 
 const isBetween = (value: number, { a, b }: { a: number; b: number }) => {
   return value >= Math.min(a, b) && value <= Math.max(a, b);
 };
-export class Panels {
-  // returns kW
-  public getEfficiency(time: Date, clearSkyRatio: number) {
-    const hour = time.getUTCHours();
-    const monthNatural = time.getUTCMonth() + 1;
-
-    if (true) {
-      // todo add conditions
-      return Math.random() * 5;
-    }
-  }
-}
-
-export class Sensors {
-  public outsideTemperature;
-  public clearSkyRatio;
-
-  constructor(initialTemperature: number, initialClearSkyRatio: number) {
-    this.outsideTemperature = initialTemperature;
-    this.clearSkyRatio = initialClearSkyRatio;
-  }
-
-  public refresh() {
-    // shifts current temperature by a random number between -1 and 1
-    const temperatureShift = Math.random() * 2 - 1;
-    this.outsideTemperature += temperatureShift;
-
-    this.clearSkyRatio = Math.random();
-  }
-}
 
 const getTargetTemperature = (time: Date) => {
   const isHoliday = isBetween(time.getUTCMonth() + 1, { a: 7, b: 9 });
@@ -67,6 +40,7 @@ export class Building {
   ];
   public sensors: Sensors = new Sensors(20.1, 0.3);
   public panels: Panels = new Panels();
+  public battery: Battery = new Battery(7, 2);
 
   private randomizeVariables() {
     this.sensors.refresh();
