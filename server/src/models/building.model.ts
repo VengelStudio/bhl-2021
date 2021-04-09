@@ -88,7 +88,7 @@ export class Building {
 
 
   public heatRooms() {
-    this.rooms.forEach(room => {!this.differenceCheck(room) ? room.is_heated = true : room.is_heated = false});
+    this.rooms.forEach(room => {this.differenceCheck(room) ? room.is_heated = true : room.is_heated = false});
     this.rooms.forEach(room => {room.is_heated ? room.current_temperature += 1/6 : room.current_temperature += this.temperatureDecrease(this.sensors.outside.temperature) })
   
   }
