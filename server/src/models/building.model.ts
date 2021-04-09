@@ -23,7 +23,6 @@ const getTargetTemperature = (time: Date) => {
 
     return isMorning ? 20 : 23;
   } else if (isWorkday) {
-    console.log(isWorkday, hours);
     const isMorning = isBetween(hours, { a: 0, b: 4 });
 
     return isMorning ? 20 : 23;
