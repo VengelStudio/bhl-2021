@@ -7,7 +7,7 @@ class BuildingController {
     const simulation: Simulation = SimulationSingleton.getInstance();
 
     try {
-      res.status(200).json({ data: await simulation.getBuilding() });
+      res.status(200).json({ building: simulation.getBuilding(), time: simulation.getTimeManager().getTime() });
     } catch (error) {
       next(error);
     }

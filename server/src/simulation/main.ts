@@ -1,14 +1,21 @@
 import defaultBuilding from '../models/building.model';
+import initialTimeManager from '../models/time-manager.model';
 
 export class Simulation {
   private building = defaultBuilding;
+  private timeManager = initialTimeManager;
 
   public tick() {
     this.building.tick();
+    this.timeManager.tick();
   }
 
   public getBuilding() {
     return this.building;
+  }
+
+  public getTimeManager() {
+    return this.timeManager;
   }
 }
 
