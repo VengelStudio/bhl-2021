@@ -7,7 +7,7 @@ class BuildingController {
 
   public getBuilding = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      res.status(200).json({ data: {} as BuildingDto, message: 'findAll' });
+      res.status(200).json({ data: this.buildingService.getBuilding() });
     } catch (error) {
       next(error);
     }
