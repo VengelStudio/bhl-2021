@@ -17,6 +17,10 @@ export const MainPage: React.FC = () => {
     }, 1000);
   }, []);
 
+  let temperatureOutside = Math.round(
+    response?.building?.sensors?.outsideTemperature
+  );
+
   return (
     <div>
       <div className="page-wrapper">
@@ -27,7 +31,7 @@ export const MainPage: React.FC = () => {
               <p>
                 <span>
                   Temperatura na zewnątrz:{" "}
-                  {response?.building?.sensors?.outsideTemperature || "<brak>"}
+                  {`${temperatureOutside} °C` || "<brak>"}
                 </span>
               </p>
             </DevicePanel>
@@ -40,11 +44,6 @@ export const MainPage: React.FC = () => {
           <div className="devices-wrapper">
             <div className="device-column">
               <DevicePanel title="Photovoltaic panels">
-                <p>chuuuj</p>
-                <p>chuuuj</p>
-                <p>chuuuj</p>
-                <p>chuuuj</p>
-                <p>chuuuj</p>
                 <p>chuuuj</p>
               </DevicePanel>
               <DevicePanel title="Battery">
