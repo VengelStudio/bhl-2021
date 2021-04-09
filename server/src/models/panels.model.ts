@@ -1,4 +1,4 @@
-import { isBetween } from '../utils/is-between';
+import { isBetween, isBetweenHours } from '../utils/is-between';
 
 enum ClearSkyLevel {
   LOW = 'LOW',
@@ -20,9 +20,9 @@ const calculateEfficiency = (hour: number, month: number, clearSkyRatio: number)
     : ClearSkyLevel.HIGH;
 
   if ([1, 12].includes(month)) {
-    const dayTime = isBetween(hour, { a: 15, b: 7 })
+    const dayTime = isBetweenHours(hour, { a: 15, b: 7 })
       ? DayTime.NIGHT
-      : isBetween(hour, { a: 8, b: 9 }) || isBetween(hour, { a: 14, b: 14 })
+      : isBetweenHours(hour, { a: 8, b: 9 }) || isBetweenHours(hour, { a: 14, b: 14 })
       ? DayTime.EARLY
       : DayTime.NOON;
 
@@ -57,9 +57,9 @@ const calculateEfficiency = (hour: number, month: number, clearSkyRatio: number)
         }
     }
   } else if ([2, 3, 10, 11].includes(month)) {
-    const dayTime = isBetween(hour, { a: 16, b: 6 })
+    const dayTime = isBetweenHours(hour, { a: 16, b: 6 })
       ? DayTime.NIGHT
-      : isBetween(hour, { a: 7, b: 8 }) || isBetween(hour, { a: 15, b: 15 })
+      : isBetweenHours(hour, { a: 7, b: 8 }) || isBetweenHours(hour, { a: 15, b: 15 })
       ? DayTime.EARLY
       : DayTime.NOON;
 
@@ -94,9 +94,9 @@ const calculateEfficiency = (hour: number, month: number, clearSkyRatio: number)
         }
     }
   } else if ([4, 5, 9].includes(month)) {
-    const dayTime = isBetween(hour, { a: 18, b: 5 })
+    const dayTime = isBetweenHours(hour, { a: 18, b: 5 })
       ? DayTime.NIGHT
-      : isBetween(hour, { a: 6, b: 6 }) || isBetween(hour, { a: 17, b: 17 })
+      : isBetweenHours(hour, { a: 6, b: 6 }) || isBetweenHours(hour, { a: 17, b: 17 })
       ? DayTime.EARLY
       : DayTime.NOON;
 
@@ -131,9 +131,9 @@ const calculateEfficiency = (hour: number, month: number, clearSkyRatio: number)
         }
     }
   } else {
-    const dayTime = isBetween(hour, { a: 20, b: 4 })
+    const dayTime = isBetweenHours(hour, { a: 20, b: 4 })
       ? DayTime.NIGHT
-      : isBetween(hour, { a: 5, b: 6 }) || isBetween(hour, { a: 19, b: 19 })
+      : isBetweenHours(hour, { a: 5, b: 6 }) || isBetweenHours(hour, { a: 19, b: 19 })
       ? DayTime.EARLY
       : DayTime.NOON;
 
@@ -181,6 +181,6 @@ export class Panels {
 
     this.efficiency = calculatedEfficiency;
 
-    return calculateEfficiency;
+    return calculatedEfficiency;
   }
 }
