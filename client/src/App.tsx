@@ -14,7 +14,7 @@ function App() {
           setResponse(JSON.stringify(data));
         });
     }, 1000);
-  });
+  }, []);
 
   return (
     <div className="App">
