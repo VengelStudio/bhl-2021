@@ -39,26 +39,25 @@ export class Building {
     new Room({ id: 6, heatingPower: 2 }),
     new Room({ id: 7, heatingPower: 3 }),
   ];
-  public sensors: Sensors = new Sensors(20.1, 0.3);
+  public sensors: Sensors = new Sensors();
   public panels: Panels = new Panels();
   public battery: Battery = new Battery(7, 2);
   public waterStorage: WaterStorage = new WaterStorage();
   public powerExchange: PowerExchange = new PowerExchange();
 
-  private randomizeVariables() {
-    this.sensors.refresh();
-  }
-
   public recalculate(newTime: Date) {
-    this.randomizeVariables();
+    const sensorData = this.sensors.getValues(newTime);
 
     this.rooms.forEach(room => room.setTargetTemperature(getTargetTemperature(newTime)));
 
-    const panelEfficiency = this.panels.getEfficiency(newTime, this.sensors.clearSkyRatio);
+    const panelEfficiency = this.panels.getEfficiency(newTime, sensorData.outside.clearSkyRatio);
 
     console.table({
       time: newTime.toISOString(),
-      outsideTemperature: this.sensors.outsideTemperature,
+      outsideTemperature: sensorData.outside.temperature,
+      outsideInsolation: sensorData.outside.insolation,
+      outsideClearSkyRatio: sensorData.outside.clearSkyRatio,
+      recuperationIncomingTemperature: sensorData.recuperation.incomingTemperature,
       panelEfficiency,
       targetTemperature: getTargetTemperature(newTime),
     });
