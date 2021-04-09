@@ -64,7 +64,7 @@ export class Building {
    
     });
     console.table([0,1,2,3,4,5,6].map(id=> ({is_heated:this.rooms[id].is_heated, current_temperature:this.rooms[id].current_temperature, 
-      target_temperature: this.rooms[id].target_temperature, differenceCheck2: this.differenceCheck2(this.rooms[id]), newTime})))
+      target_temperature: this.rooms[id].target_temperature, differenceCheck: this.differenceCheck(this.rooms[id]), newTime})))
 
     console.log(this.differenceCheck(this.rooms[0]));
 
@@ -77,16 +77,12 @@ export class Building {
   }
   
   public differenceCheck(room: Room){
-      let differenceCheck = Math.abs(room.current_temperature - room.target_temperature);
+      let differenceCheck = room.current_temperature - room.target_temperature
 
-      return differenceCheck < 1;
+      return differenceCheck < 1 
   } 
 
-  public differenceCheck2(room: Room){
-    let differenceCheck = room.current_temperature - room.target_temperature;
 
-    return differenceCheck;
-} 
 
   public heatRooms() {
     this.rooms.forEach(room => {!this.differenceCheck(room) ? room.is_heated = true : room.is_heated = false});
