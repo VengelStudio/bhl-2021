@@ -1,4 +1,4 @@
-class TimeManager {
+export class TimeManager {
   private currentTime: Date;
   private readonly tick_size_in_mins = 10;
 

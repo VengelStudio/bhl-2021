@@ -6,7 +6,7 @@ export class Simulation {
   private timeManager = initialTimeManager;
 
   public tick() {
-    this.building.tick();
+    this.building.tick(this.timeManager.getTime());
     this.timeManager.tick();
   }
 
