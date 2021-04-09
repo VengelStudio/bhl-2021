@@ -52,7 +52,7 @@ export const MainPage: React.FC = () => {
               <div className="parameters">
                 <DevicePanel title="Outside parameters">
                   <SingleData
-                    label="Temperatura na zewnątrz"
+                    label="Outside temperature"
                     value={`${temperatureOutside} °C` || "<brak>"}
                   />
                 </DevicePanel>

@@ -34,25 +34,25 @@ export const Navbar: React.FC = () => {
 
   function checkDayOfTheWeek(day: any) {
     if (day === 0) {
-      return "Niedziela";
+      return "Sunday";
     } else if (day === 1) {
-      return "Poniedziałek";
+      return "Monday";
     } else if (day === 2) {
-      return "Wtorek";
+      return "Tuesday";
     } else if (day === 3) {
-      return "Środa";
+      return "Wednesday";
     } else if (day === 4) {
-      return "Czwartek";
+      return "Thursday";
     } else if (day === 5) {
-      return "Piątek";
+      return "Friday";
     } else if (day === 6) {
-      return "Sobota";
+      return "Saturday";
     }
   }
   return (
     <div className="navbar">
       <div className="navbar__box">
-        <p>Dzień tygodnia:</p>
+        <p>Day of the week:</p>
         {Object.keys(response).length !== 0 ? (
           <p className="navbar__time">{dayOfTheWeek}</p>
         ) : (
