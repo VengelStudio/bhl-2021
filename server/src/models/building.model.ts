@@ -62,6 +62,12 @@ export class Building {
       targetTemperature: getTargetTemperature(newTime),
     });
   }
+
+  public heatARoom() {
+
+    this.
+  }
+
 }
 
 // starting values here
