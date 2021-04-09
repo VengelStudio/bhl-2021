@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import { BuildingDto } from '../dtos/building.dto';
-import BuildingService from '../services/building.service';
+import { Simulation } from '../simulation/main';
 
+const SimulationSingleton = require('../simulation/main');
 class BuildingController {
-  public buildingService = new BuildingService();
-
   public getBuilding = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const simulation: Simulation = SimulationSingleton.getInstance();
+
     try {
-      res.status(200).json({ data: {} as BuildingDto, message: 'findAll' });
+      res.status(200).json({ building: simulation.getBuilding(), time: simulation.getTimeManager().getTime() });
     } catch (error) {
       next(error);
     }

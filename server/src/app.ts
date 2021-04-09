@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import compression from 'compression';
 import Routes from './interfaces/routes.interface';
 
+const SimulationSingleton = require('./simulation/main');
 class App {
   public app: express.Application;
   public port: string | number;
@@ -25,6 +26,11 @@ class App {
     this.app.listen(this.port, () => {
       console.log(`🚀 App listening on the port ${this.port}`);
     });
+
+    setInterval(() => {
+      const simulation = SimulationSingleton.getInstance();
+      simulation.tick();
+    }, 500);
   }
 
   public getServer() {
