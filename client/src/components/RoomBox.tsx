@@ -6,10 +6,16 @@ import { Icon } from "@material-ui/core";
 interface props {
   name: string;
   temperature: number;
+  targetTemperature: number;
   heating: boolean;
 }
 
-export const RoomBox: React.FC<props> = ({ name, temperature, heating }) => {
+export const RoomBox: React.FC<props> = ({
+  name,
+  temperature,
+  targetTemperature,
+  heating,
+}) => {
   return (
     <div className="room-box">
       <p className="room-box__name">{name}</p>
@@ -36,7 +42,7 @@ export const RoomBox: React.FC<props> = ({ name, temperature, heating }) => {
         </span>
         <span style={{ marginTop: "10px" }}>
           <span className="room-box__temperature">
-            Target temperature: {`${temperature}°C`}
+            Target temperature: {`${targetTemperature}°C`}
           </span>
         </span>
       </div>
