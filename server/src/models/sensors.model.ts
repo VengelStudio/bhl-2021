@@ -40,15 +40,17 @@ export class Sensors {
   public getValues(time: Date) {
     const temperatureOutside = getBaseTemperature(time) + (Math.random() * 2 - 1) * 5;
 
+    this.outside = {
+      temperature: temperatureOutside,
+      insolation: getInsolationFromHour(time.getUTCHours()),
+      clearSkyRatio: Math.random(),
+    };
+    this.recuperation = {
+      incomingTemperature: temperatureOutside + getRandomShift(),
+    };
     return {
-      outside: {
-        temperature: temperatureOutside,
-        insolation: getInsolationFromHour(time.getUTCHours()),
-        clearSkyRatio: Math.random(),
-      },
-      recuperation: {
-        incomingTemperature: temperatureOutside + getRandomShift(),
-      },
+      outside: this.outside,
+      recuperation: this.recuperation,
     };
   }
 }
