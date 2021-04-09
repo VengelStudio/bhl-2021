@@ -25,6 +25,7 @@ const getInsolationFromHour = hour => {
   return 0.98 / Math.abs(hour - 12);
 };
 
+// this class mocks real-world sensors
 export class Sensors {
   public outside = {
     temperature: 0,
