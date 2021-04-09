@@ -180,5 +180,7 @@ export class Panels {
     let calculatedEfficiency = calculateEfficiency(hour, monthNatural, clearSkyRatio);
 
     this.efficiency = calculatedEfficiency;
+
+    return calculateEfficiency;
   }
 }
