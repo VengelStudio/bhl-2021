@@ -1,38 +1,13 @@
+import { Battery } from './battery.model';
+import { Panels } from './panels.model';
+import { PowerExchange } from './power-exchange.model';
 import { Room } from './room.model';
+import { Sensors } from './sensors.model';
+import { WaterStorage } from './water-storage.model';
 
 const isBetween = (value: number, { a, b }: { a: number; b: number }) => {
   return value >= Math.min(a, b) && value <= Math.max(a, b);
 };
-export class Panels {
-  // returns kW
-  public getEfficiency(time: Date, clearSkyRatio: number) {
-    const hour = time.getUTCHours();
-    const monthNatural = time.getUTCMonth() + 1;
-
-    if (true) {
-      // todo add conditions
-      return Math.random() * 5;
-    }
-  }
-}
-
-export class Sensors {
-  public outsideTemperature;
-  public clearSkyRatio;
-
-  constructor(initialTemperature: number, initialClearSkyRatio: number) {
-    this.outsideTemperature = initialTemperature;
-    this.clearSkyRatio = initialClearSkyRatio;
-  }
-
-  public refresh() {
-    // shifts current temperature by a random number between -1 and 1
-    const temperatureShift = Math.random() * 2 - 1;
-    this.outsideTemperature += temperatureShift;
-
-    this.clearSkyRatio = Math.random();
-  }
-}
 
 const getTargetTemperature = (time: Date) => {
   const isHoliday = isBetween(time.getUTCMonth() + 1, { a: 7, b: 9 });
@@ -48,7 +23,6 @@ const getTargetTemperature = (time: Date) => {
 
     return isMorning ? 20 : 23;
   } else if (isWorkday) {
-    console.log(isWorkday, hours);
     const isMorning = isBetween(hours, { a: 0, b: 4 });
 
     return isMorning ? 20 : 23;
@@ -65,23 +39,25 @@ export class Building {
     new Room({ id: 6, heatingPower: 2 }),
     new Room({ id: 7, heatingPower: 3 }),
   ];
-  public sensors: Sensors = new Sensors(20.1, 0.3);
+  public sensors: Sensors = new Sensors();
   public panels: Panels = new Panels();
-
-  private randomizeVariables() {
-    this.sensors.refresh();
-  }
+  public battery: Battery = new Battery(7, 2);
+  public waterStorage: WaterStorage = new WaterStorage();
+  public powerExchange: PowerExchange = new PowerExchange();
 
   public recalculate(newTime: Date) {
-    this.randomizeVariables();
+    const sensorData = this.sensors.getValues(newTime);
 
     this.rooms.forEach(room => room.setTargetTemperature(getTargetTemperature(newTime)));
 
-    const panelEfficiency = this.panels.getEfficiency(newTime, this.sensors.clearSkyRatio);
+    const panelEfficiency = this.panels.getEfficiency(newTime, sensorData.outside.clearSkyRatio);
 
     console.table({
       time: newTime.toISOString(),
-      outsideTemperature: this.sensors.outsideTemperature,
+      outsideTemperature: sensorData.outside.temperature,
+      outsideInsolation: sensorData.outside.insolation,
+      outsideClearSkyRatio: sensorData.outside.clearSkyRatio,
+      recuperationIncomingTemperature: sensorData.recuperation.incomingTemperature,
       panelEfficiency,
       targetTemperature: getTargetTemperature(newTime),
     });

@@ -1,7 +1,7 @@
 export class Room {
   public id: number;
-  public current_temperature: number | null = null;
-  public target_temperature: number | null = null;
+  public current_temperature = Math.random() * 10 + 10;
+  public target_temperature = 70;
   public heating_power: number;
   public heating_rate_per_tick: number;
 
