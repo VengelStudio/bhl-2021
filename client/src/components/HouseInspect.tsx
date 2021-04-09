@@ -16,6 +16,7 @@ export const HouseInspect: React.FC<props> = ({ data }) => {
               key={room.id}
               name={`Room ${room.id}`}
               temperature={Math.round(room.current_temperature)}
+              heating={true}
             />
           );
         })}
