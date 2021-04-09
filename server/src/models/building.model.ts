@@ -1,3 +1,20 @@
+export class Panels {
+  // returns kW
+  public getEfficiency(time: Date, cloudRatio: number) {
+    const isBetween = (value: number, { a, b }: { a: number; b: number }) => {
+      return value >= Math.min(a, b) && value <= Math.max(a, b);
+    };
+
+    const hour = time.getHours();
+    const monthNatural = time.getMonth() + 1;
+
+    if (true) {
+      // todo add conditions
+      return 0;
+    }
+  }
+}
+
 export class Sensors {
   public outsideTemperature;
 
