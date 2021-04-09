@@ -1,3 +1,4 @@
+import { clear } from "node:console";
 import React, { useEffect, useState } from "react";
 
 export const Navbar: React.FC = () => {
@@ -24,7 +25,9 @@ export const Navbar: React.FC = () => {
 
   let clearSkyRatio =
     Object.keys(response).length !== 0
-      ? response.building.sensors.outside.clearSkyRatio
+      ? `${Math.round(
+          (1 - response.building.sensors.outside.clearSkyRatio) * 100
+        )}%`
       : "Loading..";
 
   return (
