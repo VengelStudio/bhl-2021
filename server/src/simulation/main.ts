@@ -4,7 +4,6 @@ export class Simulation {
   private building = defaultBuilding;
 
   public tick() {
-    console.log('SIMULATION TICK');
     this.building.tick();
   }
 

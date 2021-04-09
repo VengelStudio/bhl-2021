@@ -27,10 +27,9 @@ class App {
       console.log(`🚀 App listening on the port ${this.port}`);
     });
 
-    // const simulation = require('./simulation/main');
     setInterval(() => {
-      const instance = SimulationSingleton.getInstance();
-      instance.tick();
+      const simulation = SimulationSingleton.getInstance();
+      simulation.tick();
     }, 500);
   }
 
