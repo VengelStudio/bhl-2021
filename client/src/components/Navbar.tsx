@@ -26,7 +26,7 @@ export const Navbar: React.FC = () => {
     <div className="navbar">
       <div className="navbar__box">
         <p>Time:</p>
-        {Object.keys(response).length != 0 ? (
+        {Object.keys(response).length !== 0 ? (
           <p className="navbar__time">{`${hours}:${minutes}`}</p>
         ) : (
           <p className="navbar__time">Loading simulation time...</p>
