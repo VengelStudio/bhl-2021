@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { HouseInspect } from "./HouseInspect";
 import { DevicePanel } from "./DevicePanel";
 import { ControlPanel } from "./ControlPanel";
 
 export const MainPage: React.FC = () => {
-  const [response, setResponse] = useState<string>("");
+  const [response, setResponse] = useState<any>({});
+
+  useEffect(() => {
+    setInterval(() => {
+      fetch("http://localhost:5000/building", { method: "GET" })
+        .then((response) => response.json())
+        .then((data) => {
+          setResponse(data);
+        });
+    }, 1000);
+  }, []);
 
   return (
     <div>
@@ -14,7 +24,12 @@ export const MainPage: React.FC = () => {
           <HouseInspect />
           <div className="parameters">
             <DevicePanel title="Outside parameters">
-              <p>chuuuj</p>
+              <p>
+                <span>
+                  Temperatura na zewnątrz:{" "}
+                  {response?.building?.sensors?.outsideTemperature || "<brak>"}
+                </span>
+              </p>
             </DevicePanel>
             <DevicePanel title="Water storage">
               <p>chuuuj</p>
