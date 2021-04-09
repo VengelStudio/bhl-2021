@@ -4,7 +4,7 @@ import { Divider } from "@material-ui/core";
 interface HeaderProps {
   children: any;
   divider: boolean;
-  hint: string;
+  hint?: string;
 }
 
 export const Header: React.FC<HeaderProps> = ({ children, divider, hint }) => {
