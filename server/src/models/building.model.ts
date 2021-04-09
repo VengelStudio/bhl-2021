@@ -57,7 +57,7 @@ export class Building {
 
     this.rooms.forEach(room => room.setTargetTemperature(getTargetTemperature(newTime)));
 
-    const panelEfficiency = this.panels.getEfficiency(newTime, this.sensors.clearSkyRatio);
+   // const panelEfficiency = this.panels.getEfficiency(newTime, this.sensors.clearSkyRatio);
     
     this.heatRooms();
     
@@ -71,7 +71,7 @@ export class Building {
       room6: this.rooms[5].is_heated,
       room7: this.rooms[6].is_heated,
 
-    })
+    });
 
     // console.table({
     //   time: newTime.toISOString(),
