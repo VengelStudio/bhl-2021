@@ -109,21 +109,17 @@ export const Navbar: React.FC = () => {
       <Divider orientation="vertical" />
       <div className="navbar__box" style={{ marginLeft: "40px" }}>
         <HomeIcon></HomeIcon>
-        <Link to="/">Dashboard</Link>
+        <Link to="/">
+          <span style={{ color: "#252525" }}>Dashboard</span>
+        </Link>
       </div>
       <div className="navbar__box">
         <SettingsIcon></SettingsIcon>
-        <Link to="/settings">Settings</Link>
+        <Link to="/settings">
+          <span style={{ color: "#252525" }}>Settings</span>
+        </Link>
       </div>
       <Divider orientation="vertical" />
-      <p style={{ marginLeft: "20px" }}>
-        Energy consumption:{" "}
-        {Object.keys(response).length !== 0 ? (
-          <span>{response.building.energyConsumption}</span>
-        ) : (
-          <span>Loading...</span>
-        )}
-      </p>
 
       <Button style={{ marginLeft: "auto" }} onClick={handleClickOpen}>
         <VisibilityIcon></VisibilityIcon>

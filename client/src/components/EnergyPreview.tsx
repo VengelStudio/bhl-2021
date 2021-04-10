@@ -6,7 +6,8 @@ import {
   Chart,
   LineSeries,
 } from "@devexpress/dx-react-chart-material-ui";
-export interface PhotovoltaicPanelPreviewProps {
+
+export interface EnergyPreviewProps {
   response: any;
 }
 
@@ -15,9 +16,7 @@ interface ChartData {
   value: number;
 }
 
-export const PhotovoltaicPanelPreview: React.FC<PhotovoltaicPanelPreviewProps> = ({
-  response,
-}) => {
+export const EnergyPreview: React.FC<EnergyPreviewProps> = ({ response }) => {
   const [calculatedData, setCalculatedData] = useState<ChartData[]>([]);
 
   useEffect(() => {
@@ -25,10 +24,9 @@ export const PhotovoltaicPanelPreview: React.FC<PhotovoltaicPanelPreviewProps> =
       ...calculatedData,
       {
         argument: new Date(response.time),
-        value: response.building.panels.efficiency,
+        value: response.building.energyConsumption,
       },
     ]);
-    console.log(response.building.panels.efficiency);
   }, [response]);
 
   const ValueLabel = (props: any) => {
@@ -57,22 +55,12 @@ export const PhotovoltaicPanelPreview: React.FC<PhotovoltaicPanelPreviewProps> =
           <ValueAxis labelComponent={ValueLabel} />
 
           <LineSeries
-            color="#096192"
+            color="#f50057"
             valueField="value"
             argumentField="argument"
           />
         </Chart>
       </Paper>
-      <Typography style={{ marginTop: "8px" }} variant="body2">
-        {`Current power production: ${
-          Math.round(response.building.panels.efficiency * 10) / 10
-        } kW`}
-      </Typography>
-      <Typography variant="body2">
-        {`Today generated: ${
-          Math.round(response.building.panels.power_today * 10) / 10
-        } kWh`}
-      </Typography>
     </div>
   );
 };

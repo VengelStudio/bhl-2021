@@ -47,13 +47,17 @@ export class Building {
   public energyConsumption: number;
   public stats: Stats = new Stats();
 
+  public preview_power_solar = 0;
+  public preview_power_from_network = 0;
+  public preview_power_to_network = 0;
+  public preview_battery_discharge = 0;
+
   public getConsumption() {
     let powerConsumption = 0;
     this.rooms.forEach(room => {
-      room.is_heated === true ? (powerConsumption += room.heating_power + this.waterStorage.heating_power ) : '';
+      room.is_heated === true ? (powerConsumption += room.heating_power + this.waterStorage.heating_power) : '';
     });
     this.energyConsumption = powerConsumption + additionalEnergyConsumed;
-
 
     return powerConsumption + additionalEnergyConsumed;
   }
@@ -65,64 +69,72 @@ export class Building {
 
     this.battery.calculateBatteryLevel();
 
-// MODE A
+    // MODE A
 
-    if(this.powerManager.mode === 'a'){
+    if (this.powerManager.mode === 'a') {
       let powerWithSolar = this.getConsumption() - solarEfficiency;
-        if(powerWithSolar > 0){
-          powerFromNetworkUsage = powerWithSolar;
-        }
+      this.preview_power_solar = solarEfficiency;
 
-        else{
-          if(this.battery.currentCharge < this.battery.capacity){
+      if (powerWithSolar > 0) {
+        powerFromNetworkUsage = powerWithSolar;
+        this.preview_power_from_network = powerFromNetworkUsage;
+      } else {
+        if (this.battery.currentCharge < this.battery.capacity) {
           this.battery.chargeBattery(Math.abs(powerWithSolar));
-          }
         }
+      }
+      this.preview_power_to_network = powerGivenToNetwork;
     }
-// MODE B
-      if (this.powerManager.mode === 'b'){
-        let powerWithSolar = this.getConsumption() - solarEfficiency;
+    // MODE B
+    if (this.powerManager.mode === 'b') {
+      let powerWithSolar = this.getConsumption() - solarEfficiency;
+      this.preview_power_solar = solarEfficiency;
 
-        if(powerWithSolar > 0){
-          powerFromNetworkUsage = powerWithSolar;
-        }
-
-        else{
-          powerGivenToNetwork += Math.abs(powerWithSolar)
-        }
+      if (powerWithSolar > 0) {
+        powerFromNetworkUsage = powerWithSolar;
+        this.preview_power_from_network = powerFromNetworkUsage;
+      } else {
+        powerGivenToNetwork += Math.abs(powerWithSolar);
       }
 
-// MODE C
-      if (this.powerManager.mode === 'c') {
-          let powerWithSolar = this.getConsumption() - solarEfficiency;
-  
-          if(powerWithSolar > 0){
-            powerFromNetworkUsage = powerWithSolar;
-          }
-  
-          else{
-            if(this.battery.currentCharge < this.battery.capacity){
-              this.battery.chargeBattery(Math.abs(powerWithSolar));
-              }
-          }
-      }
+      this.preview_power_to_network = powerGivenToNetwork;
+    }
 
-// MODE D
-      if (this.powerManager.mode === 'd'){
-        let powerWithSolarAndBattery = this.getConsumption() - solarEfficiency - this.battery.getEfficiency();
-
-        if(this.battery.currentCharge > 0){
-          this.battery.dischargeBattery();
-        }
-
-        if (powerWithSolarAndBattery > 0){
-          powerFromNetworkUsage = powerWithSolarAndBattery;
-        }
-
-        else{
-          powerGivenToNetwork += Math.abs(powerWithSolarAndBattery);
+    // MODE C
+    if (this.powerManager.mode === 'c') {
+      let powerWithSolar = this.getConsumption() - solarEfficiency;
+      this.preview_power_solar = solarEfficiency;
+      if (powerWithSolar > 0) {
+        powerFromNetworkUsage = powerWithSolar;
+        this.preview_power_from_network = powerFromNetworkUsage;
+      } else {
+        if (this.battery.currentCharge < this.battery.capacity) {
+          this.battery.chargeBattery(Math.abs(powerWithSolar));
         }
       }
+      this.preview_power_to_network = powerGivenToNetwork;
+    }
+
+    // MODE D
+    if (this.powerManager.mode === 'd') {
+      let powerWithSolarAndBattery = this.getConsumption() - solarEfficiency - this.battery.getEfficiency();
+      this.preview_power_solar = solarEfficiency;
+
+      if (this.battery.currentCharge > 0) {
+        this.battery.dischargeBattery();
+        this.preview_battery_discharge = 2;
+      } else {
+        this.preview_battery_discharge = 0;
+      }
+
+      if (powerWithSolarAndBattery > 0) {
+        powerFromNetworkUsage = powerWithSolarAndBattery;
+        this.preview_power_from_network = powerFromNetworkUsage;
+      } else {
+        powerGivenToNetwork += Math.abs(powerWithSolarAndBattery);
+      }
+      this.preview_power_to_network = powerGivenToNetwork;
+    }
 
     this.rooms.forEach(room => room.setTargetTemperature(getTargetTemperature(newTime)));
 
@@ -145,8 +157,8 @@ export class Building {
     }
 
     let key = `${newTime.getUTCDate()}.${newTime.getUTCMonth()}.${newTime.getUTCFullYear()}`;
-    let powerFromNetworkRounded = Math.round(powerFromNetworkUsage/6)
-    this.stats.updateStats(key,this.stats[key] ?  this.stats[key] += powerFromNetworkRounded : this.stats[key] = powerFromNetworkRounded);
+    let powerFromNetworkRounded = Math.round(powerFromNetworkUsage / 6);
+    this.stats.updateStats(key, this.stats[key] ? (this.stats[key] += powerFromNetworkRounded) : (this.stats[key] = powerFromNetworkRounded));
 
     // console.table(
     //   [0, 1, 2, 3, 4, 5, 6].map(id => ({
@@ -160,12 +172,11 @@ export class Building {
 
     powerConsumptionSum += powerFromNetworkUsage;
     console.log(powerConsumptionSum);
-    if(tickNumber === 6){
-      hourConsumption = powerConsumptionSum;      
-      console.log("jd:", hourConsumption);
+    if (tickNumber === 6) {
+      hourConsumption = powerConsumptionSum;
+      console.log('jd:', hourConsumption);
       tickNumber = 0;
       powerConsumptionSum = 0;
-
     }
     tickNumber++;
   }
@@ -246,36 +257,35 @@ export class Building {
     });
   }
 
-
-  public getAdditionalEnergyConsumed(time: any){
+  public getAdditionalEnergyConsumed(time: any) {
     const isWeekend = isBetween(time.getUTCDay() + 1, { a: 6, b: 7 });
     const isHoliday = isBetween(time.getUTCMonth() + 1, { a: 7, b: 9 });
     const isWorkday = !isWeekend;
     const hours = time.getUTCHours();
 
-    if(isWorkday){
-      switch(true){
-          case isBetween(hours, { a: 0, b: 4 }):
-            additionalEnergyConsumed = 0.5;
-            break;
-          case isBetween(hours, { a: 5, b: 7 }):
-            additionalEnergyConsumed = 3;
-            break;
-          case isBetween(hours, { a: 8, b: 9 }):
-            additionalEnergyConsumed = 2;
-            break;
-          case isBetween(hours, { a: 10, b: 15 }):
-            additionalEnergyConsumed = 1;
-            break;  
-          case isBetween(hours, { a: 16, b: 19 }):
-            additionalEnergyConsumed = 2;
-            break;  
-          case isBetween(hours, { a: 20, b: 23 }):
-            additionalEnergyConsumed = 1;
-            break;  
+    if (isWorkday) {
+      switch (true) {
+        case isBetween(hours, { a: 0, b: 4 }):
+          additionalEnergyConsumed = 0.5;
+          break;
+        case isBetween(hours, { a: 5, b: 7 }):
+          additionalEnergyConsumed = 3;
+          break;
+        case isBetween(hours, { a: 8, b: 9 }):
+          additionalEnergyConsumed = 2;
+          break;
+        case isBetween(hours, { a: 10, b: 15 }):
+          additionalEnergyConsumed = 1;
+          break;
+        case isBetween(hours, { a: 16, b: 19 }):
+          additionalEnergyConsumed = 2;
+          break;
+        case isBetween(hours, { a: 20, b: 23 }):
+          additionalEnergyConsumed = 1;
+          break;
       }
-    }else if (!isWorkday){
-      switch(true){
+    } else if (!isWorkday) {
+      switch (true) {
         case isBetween(hours, { a: 0, b: 7 }):
           additionalEnergyConsumed = 0.5;
           break;
@@ -287,27 +297,19 @@ export class Building {
           break;
         case isBetween(hours, { a: 17, b: 23 }):
           additionalEnergyConsumed = 2;
-          break;  
+          break;
       }
-    }else if(isHoliday){
+    } else if (isHoliday) {
       additionalEnergyConsumed = 0.5;
     }
     // console.log('additional energy consumed', additionalEnergyConsumed)
   }
 
+  // MODE 1
 
-// MODE 1
-
-public solarEnergy(newDate : Date){
-
-  solarEfficiency  = this.panels.getEfficiency(newDate, this.sensors.outside.clearSkyRatio);    
-}
-
-
-
-
-
-
+  public solarEnergy(newDate: Date) {
+    solarEfficiency = this.panels.getEfficiency(newDate, this.sensors.outside.clearSkyRatio);
+  }
 }
 
 // starting values here
@@ -315,7 +317,7 @@ const defaultBuilding: Building = new Building();
 let shouldWaterBeHeated = false; // is water below level of 30 liters (if yes, then shjoulWaterBeHeated === true)
 let waterPowerConsumption = 0; // current water heating consumption (changes to 6)
 let solarEfficiency = 0; // amount of power generated at a time by solar panels
-let powerFromNetworkUsage = 0 ;// amount of power taken from network at a current time
+let powerFromNetworkUsage = 0; // amount of power taken from network at a current time
 let powerGivenToNetwork = 0; // amount of power given to a network
 let additionalEnergyConsumed = 0; // amount of power drawn from the additional devices
 let hourConsumption = 0; // amount of power taken in one hour (used for cost counting)
