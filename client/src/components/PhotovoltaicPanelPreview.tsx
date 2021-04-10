@@ -43,18 +43,16 @@ export const PhotovoltaicPanelPreview: React.FC<PhotovoltaicPanelPreviewProps> =
   return (
     <div>
       <span>{`Power production: ${response.building.panels.efficiency} kWh`}</span>
-      <Paper>
-        <Chart data={calculatedData}>
-          <ArgumentAxis />
-          <ValueAxis />
+      <Chart data={calculatedData}>
+        <ArgumentAxis />
+        <ValueAxis />
 
-          <LineSeries
-            color="#000000"
-            valueField="value"
-            argumentField="argument"
-          />
-        </Chart>
-      </Paper>
+        <LineSeries
+          color="#000000"
+          valueField="value"
+          argumentField="argument"
+        />
+      </Chart>
     </div>
   );
 };
