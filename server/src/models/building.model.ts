@@ -6,6 +6,7 @@ import { Room } from './room.model';
 import { Sensors } from './sensors.model';
 import { WaterStorage } from './water-storage.model';
 import { isBetween, isBetweenHours } from '../utils/is-between';
+import { Stats } from './stats.model';
 
 const getTargetTemperature = (time: Date) => {
   const isHoliday = isBetween(time.getUTCMonth() + 1, { a: 7, b: 9 });
@@ -44,6 +45,7 @@ export class Building {
   public powerExchange: PowerExchange = new PowerExchange();
   public powerManager: PowerManager = new PowerManager();
   public energyConsumption: number;
+  public stats: Stats = new Stats();
 
   public getConsumption() {
     let powerConsumption = 0;
@@ -142,7 +144,9 @@ export class Building {
       shouldWaterBeHeated = false;
     }
 
-   
+    let key = `${newTime.getUTCDate()}.${newTime.getUTCMonth()}.${newTime.getUTCFullYear()}`;
+    let powerFromNetworkRounded = Math.round(powerFromNetworkUsage/6)
+    this.stats.updateStats(key,this.stats[key] ?  this.stats[key] += powerFromNetworkRounded : this.stats[key] = powerFromNetworkRounded);
 
     // console.table(
     //   [0, 1, 2, 3, 4, 5, 6].map(id => ({
