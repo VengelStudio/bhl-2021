@@ -312,14 +312,14 @@ public solarEnergy(newDate : Date){
 
 // starting values here
 const defaultBuilding: Building = new Building();
-let shouldWaterBeHeated = false;
-let waterPowerConsumption = 0;
-let solarEfficiency = 0;
-let powerFromNetworkUsage = 0;
-let powerGivenToNetwork = 0;
-let additionalEnergyConsumed = 0;
-let hourConsumption = 0;
-let tickNumber = 0;
-let powerConsumptionSum = 0;
+let shouldWaterBeHeated = false; // is water below level of 30 liters (if yes, then shjoulWaterBeHeated === true)
+let waterPowerConsumption = 0; // current water heating consumption (changes to 6)
+let solarEfficiency = 0; // amount of power generated at a time by solar panels
+let powerFromNetworkUsage = 0 ;// amount of power taken from network at a current time
+let powerGivenToNetwork = 0; // amount of power given to a network
+let additionalEnergyConsumed = 0; // amount of power drawn from the additional devices
+let hourConsumption = 0; // amount of power taken in one hour (used for cost counting)
+let tickNumber = 0; // 6 ticks === one hour, used for hourConsumption inerzeszy
+let powerConsumptionSum = 0; // whole power consumption at one time
 
 export default defaultBuilding;
