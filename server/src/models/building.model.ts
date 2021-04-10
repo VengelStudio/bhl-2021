@@ -48,21 +48,19 @@ export class Building {
   public getConsumption() {
     let powerConsumption = 0;
     this.rooms.forEach(room => {
-      room.is_heated === true ? (powerConsumption += room.heating_power + this.waterStorage.heating_power + additionalEnergyConsumed) : '';
+      room.is_heated === true ? (powerConsumption += room.heating_power + this.waterStorage.heating_power ) : '';
     });
-    this.energyConsumption = powerConsumption;
+    this.energyConsumption = powerConsumption + additionalEnergyConsumed;
 
 
-    return powerConsumption;
+    return powerConsumption + additionalEnergyConsumed;
   }
 
   public recalculate(newTime: Date) {
     const sensorData = this.sensors.getValues(newTime);
     this.solarEnergy(newTime);
     this.getAdditionalEnergyConsumed(newTime);
-    if(this.battery.currentCharge > 0){
-      this.battery.dischargeBattery();
-    }
+
     this.battery.calculateBatteryLevel();
 
 // MODE A
@@ -111,6 +109,10 @@ export class Building {
       if (this.powerManager.mode === 'd'){
         let powerWithSolarAndBattery = this.getConsumption() - solarEfficiency - this.battery.getEfficiency();
 
+        if(this.battery.currentCharge > 0){
+          this.battery.dischargeBattery();
+        }
+
         if (powerWithSolarAndBattery > 0){
           powerFromNetworkUsage = powerWithSolarAndBattery;
         }
@@ -151,6 +153,17 @@ export class Building {
     //     newTime,
     //   })),
     // );
+
+    powerConsumptionSum += powerFromNetworkUsage;
+    console.log(powerConsumptionSum);
+    if(tickNumber === 6){
+      hourConsumption = powerConsumptionSum;      
+      console.log("jd:", hourConsumption);
+      tickNumber = 0;
+      powerConsumptionSum = 0;
+
+    }
+    tickNumber++;
   }
 
   public differenceCheck(room: Room) {
@@ -275,7 +288,7 @@ export class Building {
     }else if(isHoliday){
       additionalEnergyConsumed = 0.5;
     }
-    console.log('additional energy consumed', additionalEnergyConsumed)
+    // console.log('additional energy consumed', additionalEnergyConsumed)
   }
 
 
@@ -301,5 +314,8 @@ let solarEfficiency = 0;
 let powerFromNetworkUsage = 0;
 let powerGivenToNetwork = 0;
 let additionalEnergyConsumed = 0;
+let hourConsumption = 0;
+let tickNumber = 0;
+let powerConsumptionSum = 0;
 
 export default defaultBuilding;
