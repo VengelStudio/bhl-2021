@@ -13,26 +13,11 @@ import {
 } from "@devexpress/dx-react-chart-material-ui";
 import { PhotovoltaicPanelPreview } from "./PhotovoltaicPanelPreview";
 
-interface SimpleDay {
-  day: number;
-  month: number;
-  year: number;
+export interface MainPageProps {
+  response: any;
 }
 
-export const MainPage: React.FC = () => {
-  const [response, setResponse] = useState<any>({});
-
-  useEffect(() => {
-    setInterval(() => {
-      fetch("http://localhost:5000/building", { method: "GET" })
-        .then((response) => response.json())
-        .then((data) => {
-          setResponse(data);
-          console.log(data);
-        });
-    }, 1000);
-  }, []);
-
+export const MainPage: React.FC<MainPageProps> = ({ response }) => {
   const onModeChange = (mode: "a" | "b" | "c" | "d") => {
     fetch("http://localhost:5000/building/power-manager/mode", {
       method: "POST",
@@ -40,23 +25,6 @@ export const MainPage: React.FC = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ mode }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
-  };
-
-  const onDaysChange = () => {
-    fetch("http://localhost:5000/building/power-exchange/days", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        pushDays: [{ day: 1, month: 1, year: 1 }] as SimpleDay[],
-        pullDays: [{ day: 2, month: 2, year: 2 }] as SimpleDay[],
-      }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -79,7 +47,6 @@ export const MainPage: React.FC = () => {
 
   return (
     <div>
-      <button onClick={onDaysChange}>asdasd</button>
       <div
         className="page-wrapper"
         style={

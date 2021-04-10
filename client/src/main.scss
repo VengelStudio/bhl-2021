@@ -35,6 +35,11 @@ h2 {
   &__box {
     display: flex;
     margin-right: 40px;
+    align-items: center;
+    a {
+      text-decoration: none;
+      margin-left: 4px;
+    }
   }
 
   &__time,
