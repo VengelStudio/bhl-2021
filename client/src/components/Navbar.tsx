@@ -70,14 +70,16 @@ export const Navbar: React.FC = () => {
   }
 
   const getFormattedDate = (date: Date) => {
-    return `${checkDayOfTheWeek(date.getUTCDay())}, ${
-      date.getUTCDay() + 1
-    } ${date.toLocaleString("default", {
+    console.log(date);
+    return `${checkDayOfTheWeek(
+      date.getUTCDate()
+    )}, ${date.getUTCDate()} ${date.toLocaleString("default", {
       month: "long",
     })} ${date.getUTCFullYear()} ${hours}:${minutes}`;
   };
 
   const handleDayClick = (day: Date) => {
+    // console.log(day);
     setSelectedDay(day);
   };
 
