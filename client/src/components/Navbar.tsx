@@ -116,14 +116,6 @@ export const Navbar: React.FC = () => {
         <Link to="/settings">Settings</Link>
       </div>
       <Divider orientation="vertical" />
-      <p style={{ marginLeft: "20px" }}>
-        Energy consumption:{" "}
-        {Object.keys(response).length !== 0 ? (
-          <span>{response.building.energyConsumption}</span>
-        ) : (
-          <span>Loading...</span>
-        )}
-      </p>
 
       <Button style={{ marginLeft: "auto" }} onClick={handleClickOpen}>
         <VisibilityIcon></VisibilityIcon>

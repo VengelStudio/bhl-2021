@@ -12,6 +12,7 @@ import {
   LineSeries,
 } from "@devexpress/dx-react-chart-material-ui";
 import { PhotovoltaicPanelPreview } from "./PhotovoltaicPanelPreview";
+import { EnergyPreview } from "./EnergyPreview";
 
 export interface MainPageProps {
   response: any;
@@ -86,6 +87,9 @@ export const MainPage: React.FC<MainPageProps> = ({ response }) => {
                 <div className="device-column">
                   <DevicePanel title="Photovoltaic panels">
                     <PhotovoltaicPanelPreview response={response} />
+                  </DevicePanel>
+                  <DevicePanel title="Power consumption">
+                    <EnergyPreview response={response} />
                   </DevicePanel>
                 </div>
               </div>
