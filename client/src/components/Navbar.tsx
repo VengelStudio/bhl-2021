@@ -1,6 +1,9 @@
 import Divider from "@material-ui/core/Divider";
 import { clear } from "node:console";
 import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import HomeIcon from "@material-ui/icons/Home";
+import SettingsIcon from "@material-ui/icons/Settings";
 
 export const Navbar: React.FC = () => {
   const [response, setResponse] = useState<any>({});
@@ -60,6 +63,15 @@ export const Navbar: React.FC = () => {
         ) : (
           <span>Loading...</span>
         )}
+      </div>
+      <Divider orientation="vertical" />
+      <div className="navbar__box" style={{ marginLeft: "40px" }}>
+        <HomeIcon></HomeIcon>
+        <Link to="/">Dashboard</Link>
+      </div>
+      <div className="navbar__box">
+        <SettingsIcon></SettingsIcon>
+        <Link to="/settings">Settings</Link>
       </div>
       <Divider orientation="vertical" />
       <p style={{ marginLeft: "20px" }}>

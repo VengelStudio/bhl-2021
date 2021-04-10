@@ -13,34 +13,11 @@ import {
 } from "@devexpress/dx-react-chart-material-ui";
 import { PhotovoltaicPanelPreview } from "./PhotovoltaicPanelPreview";
 
-export const MainPage: React.FC = () => {
-  const [response, setResponse] = useState<any>({});
+export interface MainPageProps {
+  response: any;
+}
 
-  useEffect(() => {
-    setInterval(() => {
-      fetch("http://localhost:5000/building", { method: "GET" })
-        .then((response) => response.json())
-        .then((data) => {
-          setResponse(data);
-          console.log(data);
-        });
-    }, 1000);
-  }, []);
-
-  const onModeChange = (mode: "a" | "b" | "c" | "d") => {
-    fetch("http://localhost:5000/building/power-manager/mode", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ mode }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
-  };
-
+export const MainPage: React.FC<MainPageProps> = ({ response }) => {
   let temperatureOutside = Math.round(
     response?.building?.sensors?.outside?.temperature
   );
@@ -116,13 +93,6 @@ export const MainPage: React.FC = () => {
                   </DevicePanel>
                 </div>
               </div>
-              <DevicePanel title="Current weather">
-                <SingleData
-                  label="Temperature"
-                  value={`${temperatureOutside} °C`}
-                />
-                <SingleData label="Cloud coverage" value={clearSkyRatio} />
-              </DevicePanel>
             </div>
             <div className="column">
               <div className="devices-wrapper">
@@ -132,11 +102,12 @@ export const MainPage: React.FC = () => {
                   </DevicePanel>
                 </div>
               </div>
-              <DevicePanel title="Select mode">
-                <ControlPanel
-                  value={response.building.powerManager.mode}
-                  onChange={onModeChange}
+              <DevicePanel title="Current weather">
+                <SingleData
+                  label="Temperature"
+                  value={`${temperatureOutside} °C`}
                 />
+                <SingleData label="Cloud coverage" value={clearSkyRatio} />
               </DevicePanel>
             </div>
           </div>
