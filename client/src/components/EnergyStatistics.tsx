@@ -28,19 +28,19 @@ export const EnergyStatistics: React.FC<EnergyStatisticsProps> = ({
   useEffect(() => {
     setCalculatedData([
       {
-        argument: "Solar power",
+        argument: `Solar power: ${response.building.preview_power_solar}`,
         value: response.building.preview_power_solar,
       },
       {
-        argument: "Power from grid",
+        argument: `Power from grid: ${response.building.preview_power_from_network}`,
         value: response.building.preview_power_from_network,
       },
       {
-        argument: "Power to grid",
+        argument: `Power to grid: ${response.building.preview_power_to_network}`,
         value: response.building.preview_power_to_network,
       },
       {
-        argument: "Battery discharge",
+        argument: `Battery discharge: ${response.building.preview_battery_discharge}`,
         value: response.building.preview_battery_discharge,
       },
     ]);
