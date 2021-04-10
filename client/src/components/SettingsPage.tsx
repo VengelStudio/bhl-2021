@@ -4,6 +4,7 @@ import { ControlPanel } from "./ControlPanel";
 import { Button, CircularProgress } from "@material-ui/core";
 import DayPicker, { DateUtils, DayModifiers } from "react-day-picker";
 import "react-day-picker/lib/style.css";
+import { setConstantValue } from "typescript";
 
 interface SimpleDay {
   day: number;
@@ -18,6 +19,7 @@ export interface SettingsPageProps {
 export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
   const [pushDays, setPushDays] = useState<Date[]>([]);
   const [pullDays, setPullDays] = useState<Date[]>([]);
+  const [cost, setCost] = useState(false);
 
   useEffect(() => {
     if (response?.building?.powerExchange) {
@@ -71,6 +73,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
     })
       .then((response) => response.json())
       .then((data) => {
+        setCost(data.totalCost);
         console.log(data);
       });
   };
@@ -151,19 +154,25 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
                     />
                     <Button onClick={onDaysChange}>Save</Button>
                   </div>
-                  <div
-                    style={{
-                      textAlign: "center",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      flex: "1",
-                    }}
-                  >
-                    <p style={{ fontSize: "24px" }}>Total cost</p>
-                    <p style={{ fontSize: "24px", margin: "10px 0 0 0" }}>45</p>
-                  </div>
+                  {cost ? (
+                    <div
+                      style={{
+                        textAlign: "center",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flex: "1",
+                      }}
+                    >
+                      <p style={{ fontSize: "24px" }}>Total cost</p>
+                      <p style={{ fontSize: "24px", margin: "10px 0 0 0" }}>
+                        {cost}
+                      </p>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </DevicePanel>
             </div>
