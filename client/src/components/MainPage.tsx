@@ -78,45 +78,46 @@ export const MainPage: React.FC = () => {
                 <HouseInspect data={response} />
               </DevicePanel>
 
-              <DevicePanel title="Water storage">
-                {Object.keys(waterData).map(function (key) {
-                  let translatedKey;
+              <div>
+                <DevicePanel title="Water storage">
+                  {Object.keys(waterData).map(function (key) {
+                    let translatedKey;
 
-                  function translate() {
-                    if (key === "size") {
-                      translatedKey = "Size";
-                    } else if (key === "heating_power") {
-                      translatedKey = "Heating power";
-                    } else if (key === "heating_rate_per_minute") {
-                      translatedKey = "Heating rate per minute";
+                    function translate() {
+                      if (key === "size") {
+                        translatedKey = "Size";
+                      } else if (key === "heating_power") {
+                        translatedKey = "Heating power";
+                      } else if (key === "heating_rate_per_minute") {
+                        translatedKey = "Heating rate per minute";
+                      }
                     }
-                  }
-                  translate();
-                  return (
-                    <SingleData
-                      key={key}
-                      label={translatedKey}
-                      value={waterData[key]}
-                    />
-                  );
-                })}
-              </DevicePanel>
-
-              <DevicePanel title="Battery">
-                <SingleData
-                  label={"Capacity"}
-                  value={response.building.battery.capacity}
-                />
-                <br></br>
-                <SingleData
-                  label={"Current charge level"}
-                  value={`${Math.round(
-                    (response.building.battery.currentCharge /
-                      response.building.battery.capacity) *
-                      100
-                  )}%`}
-                />
-              </DevicePanel>
+                    translate();
+                    return (
+                      <SingleData
+                        key={key}
+                        label={translatedKey}
+                        value={waterData[key]}
+                      />
+                    );
+                  })}
+                </DevicePanel>
+                <DevicePanel title="Battery">
+                  <SingleData
+                    label={"Capacity"}
+                    value={response.building.battery.capacity}
+                  />
+                  <br></br>
+                  <SingleData
+                    label={"Current charge level"}
+                    value={`${Math.round(
+                      (response.building.battery.currentCharge /
+                        response.building.battery.capacity) *
+                        100
+                    )}%`}
+                  />
+                </DevicePanel>
+              </div>
             </div>
             <div className="column">
               <div className="devices-wrapper">

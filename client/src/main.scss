@@ -69,14 +69,8 @@ h2 {
 
 .device-panel {
   width: 100%;
-  margin-top: 16px;
+  margin: 8px 0 16px;
 
-  &:first-child {
-    margin-top: 0;
-  }
-  &:last-child {
-    margin-bottom: 0;
-  }
   &__content {
     box-sizing: border-box;
     padding: 20px;
