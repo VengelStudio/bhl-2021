@@ -13,6 +13,7 @@ import {
 } from "@devexpress/dx-react-chart-material-ui";
 import { PhotovoltaicPanelPreview } from "./PhotovoltaicPanelPreview";
 import { EnergyPreview } from "./EnergyPreview";
+import { EnergyStatistics } from "./EnergyStatistics";
 
 export interface MainPageProps {
   response: any;
@@ -72,12 +73,7 @@ export const MainPage: React.FC<MainPageProps> = ({ response }) => {
                 </div>
                 <div style={{ width: "50%" }}>
                   <DevicePanel title="Energy statistics">
-                    <Typography variant="body2">
-                      {`Battery charge level: ${response.building.battery.batteryLevel}%`}
-                    </Typography>
-                    <Typography variant="body2">
-                      {`Battery capacity: ${response.building.battery.capacity} kWh`}
-                    </Typography>
+                    <EnergyStatistics response={response}></EnergyStatistics>
                   </DevicePanel>
                 </div>
               </div>
