@@ -119,19 +119,19 @@ export const MainPage: React.FC = () => {
                   </DevicePanel>
                 </div>
               </div>
+              <DevicePanel title="Current weather">
+                <SingleData
+                  label="Temperature"
+                  value={`${temperatureOutside} °C`}
+                />
+                <SingleData label="Cloud coverage" value={clearSkyRatio} />
+              </DevicePanel>
             </div>
             <div className="column">
               <div className="devices-wrapper">
                 <div className="device-column">
                   <DevicePanel title="Photovoltaic panels">
                     <PhotovoltaicPanelPreview response={response} />
-                  </DevicePanel>
-                  <DevicePanel title="Current weather">
-                    <SingleData
-                      label="Temperature"
-                      value={`${temperatureOutside} °C`}
-                    />
-                    <SingleData label="Cloud coverage" value={clearSkyRatio} />
                   </DevicePanel>
                 </div>
               </div>
