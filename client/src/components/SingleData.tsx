@@ -9,8 +9,7 @@ interface props {
 export const SingleData: React.FC<props> = ({ label, value }) => {
   return (
     <Typography className="data-line" variant="body2">
-      <span className="data-line__label">{label}:</span>
-      <span className="data-line__value">{value}</span>
+      <span className="data-line__label">{`${label}: ${value}`}</span>
     </Typography>
   );
 };
