@@ -34,7 +34,7 @@ export const PhotovoltaicPanelPreview: React.FC<PhotovoltaicPanelPreviewProps> =
 
   const ValueLabel = (props: any) => {
     const { text } = props;
-    return <ValueAxis.Label {...props} text={`${text} kWh`} />;
+    return <ValueAxis.Label {...props} text={`${text} kW`} />;
   };
 
   const format = () => (tick: any) => {
@@ -67,7 +67,7 @@ export const PhotovoltaicPanelPreview: React.FC<PhotovoltaicPanelPreviewProps> =
       <Typography style={{ marginTop: "8px" }} variant="body2">
         {`Current power production: ${
           Math.round(response.building.panels.efficiency * 10) / 10
-        } kWh`}
+        } kW`}
       </Typography>
       <Typography variant="body2">
         {`Today generated: ${

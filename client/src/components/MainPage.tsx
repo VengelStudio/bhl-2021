@@ -59,36 +59,23 @@ export const MainPage: React.FC<MainPageProps> = ({ response }) => {
               <div style={{ display: "flex", width: "100%" }}>
                 <div style={{ width: "50%", marginRight: "20px" }}>
                   <DevicePanel title="Water heater">
-                    {Object.keys(waterData).map(function (key) {
-                      let translatedKey;
-
-                      function translate() {
-                        if (key === "size") {
-                          translatedKey = "Size";
-                        } else if (key === "heating_power") {
-                          translatedKey = "Heating power";
-                        } else if (key === "heating_rate_per_minute") {
-                          translatedKey = "Heating rate per minute";
-                        }
-                      }
-                      translate();
-                      return (
-                        <SingleData
-                          key={key}
-                          label={translatedKey}
-                          value={waterData[key]}
-                        />
-                      );
-                    })}
+                    <SingleData
+                      label="Hot water level"
+                      value={`${Math.floor((waterData.size / 150) * 100)} %`}
+                    />
+                    <SingleData
+                      label="Power usage"
+                      value={`${waterData.heating_power} kW`}
+                    />
                   </DevicePanel>
                 </div>
                 <div style={{ width: "50%" }}>
-                  <DevicePanel title="Battery">
+                  <DevicePanel title="Energy statistics">
                     <Typography variant="body2">
-                      {`Capacity: ${response.building.battery.capacity} kWh`}
+                      {`Battery charge level: ${response.building.battery.batteryLevel}%`}
                     </Typography>
                     <Typography variant="body2">
-                      {`Charge level: ${response.building.battery.batteryLevel}%`}
+                      {`Battery capacity: ${response.building.battery.capacity} kWh`}
                     </Typography>
                   </DevicePanel>
                 </div>
@@ -103,11 +90,12 @@ export const MainPage: React.FC<MainPageProps> = ({ response }) => {
                 </div>
               </div>
               <DevicePanel title="Current weather">
+                <SingleData label="Cloud coverage" value={clearSkyRatio} />
+
                 <SingleData
                   label="Temperature"
                   value={`${temperatureOutside} °C`}
                 />
-                <SingleData label="Cloud coverage" value={clearSkyRatio} />
               </DevicePanel>
             </div>
           </div>
