@@ -92,6 +92,7 @@ export const Navbar: React.FC = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        handleClose();
       });
   };
 
