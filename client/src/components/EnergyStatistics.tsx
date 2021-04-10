@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Paper, Typography } from "@material-ui/core";
 import {
   ArgumentAxis,
-  ValueAxis,
+  Legend,
   Chart,
   PieSeries,
 } from "@devexpress/dx-react-chart-material-ui";
@@ -23,27 +23,41 @@ export const EnergyStatistics: React.FC<EnergyStatisticsProps> = ({
 
   useEffect(() => {
     setCalculatedData([
-      ...calculatedData,
       {
-        argument: new Date(response.time),
-        value: response.building.energyConsumption,
+        argument: "Solar power",
+        value: response.building.preview_power_solar,
+      },
+      {
+        argument: "Power from network",
+        value: response.building.preview_power_from_network,
+      },
+      {
+        argument: "Power to network",
+        value: response.building.preview_power_to_network,
+      },
+      {
+        argument: "Battery discharge",
+        value: response.building.preview_battery_discharge,
       },
     ]);
   }, [response]);
 
   return (
     <>
+      <Paper>
+        <Chart height={200} data={calculatedData}>
+          <PieSeries valueField="value" argumentField="argument" />
+
+          <Legend />
+        </Chart>
+      </Paper>
+
       <Typography variant="body2">
         {`Battery charge level: ${response.building.battery.batteryLevel}%`}
       </Typography>
       <Typography variant="body2">
         {`Battery capacity: ${response.building.battery.capacity} kWh`}
       </Typography>
-      <Paper>
-        <Chart height={200} data={calculatedData}>
-          <PieSeries valueField="value" argumentField="argument" />
-        </Chart>
-      </Paper>
     </>
   );
 };
