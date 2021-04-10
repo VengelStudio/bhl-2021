@@ -78,9 +78,9 @@ export const MainPage: React.FC = () => {
                 <HouseInspect data={response} />
               </DevicePanel>
 
-              <div style={{ display: "flex" }}>
+              <div style={{ display: "flex", width: "100%" }}>
                 <div style={{ width: "50%", marginRight: "20px" }}>
-                  <DevicePanel title="Water storage">
+                  <DevicePanel title="Water heater">
                     {Object.keys(waterData).map(function (key) {
                       let translatedKey;
 
@@ -129,7 +129,7 @@ export const MainPage: React.FC = () => {
                   <DevicePanel title="Photovoltaic panels">
                     <PhotovoltaicPanelPreview response={response} />
                   </DevicePanel>
-                  <DevicePanel title="Outside parameters">
+                  <DevicePanel title="Current weather">
                     <SingleData
                       label="Outside temperature"
                       value={`${temperatureOutside} °C`}
