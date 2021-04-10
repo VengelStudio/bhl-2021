@@ -67,9 +67,9 @@ export const PhotovoltaicPanelPreview: React.FC<PhotovoltaicPanelPreviewProps> =
           />
         </Chart>
       </Paper>
-      <p>{`Generated: ${
+      <p>{`Today generated: ${
         Math.round(response.building.panels.power_today * 10) / 10
-      } kWh today.`}</p>
+      } kWh`}</p>
     </div>
   );
 };
