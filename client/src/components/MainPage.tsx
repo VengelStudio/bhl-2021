@@ -131,10 +131,10 @@ export const MainPage: React.FC = () => {
                   </DevicePanel>
                   <DevicePanel title="Current weather">
                     <SingleData
-                      label="Outside temperature"
+                      label="Temperature"
                       value={`${temperatureOutside} °C`}
                     />
-                    <SingleData label="Cloud coverage:" value={clearSkyRatio} />
+                    <SingleData label="Cloud coverage" value={clearSkyRatio} />
                   </DevicePanel>
                 </div>
               </div>
