@@ -73,11 +73,12 @@ h2 {
 
   &__content {
     box-sizing: border-box;
-    padding: 20px;
+    padding: 16px;
     box-shadow: $drop-shadow;
     width: 100%;
     border-radius: 8px;
     margin-top: 4px;
+    min-height: 100px;
   }
   &__name {
     margin: 0;
