@@ -34,6 +34,18 @@ class BuildingController {
       next(error);
     }
   };
+
+  public postSimulationDay = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const simulation: Simulation = SimulationSingleton.getInstance();
+
+    simulation.setDay(req.body.day);
+
+    try {
+      res.status(200).json({ simulation });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default BuildingController;
