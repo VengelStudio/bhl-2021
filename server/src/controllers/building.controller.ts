@@ -29,7 +29,7 @@ class BuildingController {
     simulation.getBuilding().powerExchange.setDays(req.body.pushDays, req.body.pullDays);
 
     try {
-      res.status(200).json({ building: simulation.getBuilding() });
+      res.status(200).json({ totalCost: simulation.getBuilding().powerExchange.getTotalCost() });
     } catch (error) {
       next(error);
     }
