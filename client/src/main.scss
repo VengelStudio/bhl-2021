@@ -185,3 +185,31 @@ h2 {
     font-weight: normal;
   }
 }
+
+.DayPicker-Day--selected {
+  text-decoration: underline;
+  color: #383a3c !important;
+  background-color: #d8d8d8 !important;
+}
+
+.DayPicker-Day--pushModifier {
+  &::after {
+    position: absolute;
+    content: "↑";
+    color: rgb(30, 120, 172);
+    font-weight: bold;
+    right: 0;
+    top: 0;
+  }
+}
+
+.DayPicker-Day--pullModifier {
+  &::after {
+    position: absolute;
+    content: "↓";
+    color: rgb(185, 54, 14);
+    font-weight: bold;
+    right: 0;
+    bottom: 0;
+  }
+}

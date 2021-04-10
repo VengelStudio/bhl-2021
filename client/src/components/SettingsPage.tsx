@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DevicePanel } from "./DevicePanel";
 import { ControlPanel } from "./ControlPanel";
-import { CircularProgress } from "@material-ui/core";
-import DayPicker, { DateUtils } from "react-day-picker";
+import { Button, CircularProgress } from "@material-ui/core";
+import DayPicker, { DateUtils, DayModifiers } from "react-day-picker";
 import "react-day-picker/lib/style.css";
 
 interface SimpleDay {
@@ -16,6 +16,24 @@ export interface SettingsPageProps {
 }
 
 export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
+  const [pushDays, setPushDays] = useState<Date[]>([]);
+  const [pullDays, setPullDays] = useState<Date[]>([]);
+
+  useEffect(() => {
+    if (response?.building?.powerExchange) {
+      setPushDays(
+        response.building?.powerExchange.pushDays.map(
+          (d: SimpleDay) => new Date(Date.UTC(d.year, d.month, d.day))
+        )
+      );
+      setPullDays(
+        response.building?.powerExchange.pullDays.map(
+          (d: SimpleDay) => new Date(Date.UTC(d.year, d.month, d.day))
+        )
+      );
+    }
+  }, [response]);
+
   const onModeChange = (mode: "a" | "b" | "c" | "d") => {
     fetch("http://localhost:5000/building/power-manager/mode", {
       method: "POST",
@@ -30,15 +48,23 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
       });
   };
 
-  const onDaysChange = () => {
+  const onDaysChange = (push: Date[], pull: Date[]) => {
     fetch("http://localhost:5000/building/power-exchange/days", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        pushDays: [{ day: 1, month: 1, year: 1 }] as SimpleDay[],
-        pullDays: [{ day: 2, month: 2, year: 2 }] as SimpleDay[],
+        pushDays: push.map((day) => ({
+          day: day.getUTCDate(),
+          month: day.getUTCMonth(),
+          year: day.getUTCFullYear(),
+        })) as SimpleDay[],
+        pullDays: pull.map((day) => ({
+          day: day.getUTCDate(),
+          month: day.getUTCMonth(),
+          year: day.getUTCFullYear(),
+        })) as SimpleDay[],
       }),
     })
       .then((response) => response.json())
@@ -47,18 +73,43 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
       });
   };
 
-  // const handleDayClick = (day, { selected }) => {
-  //   const selectedDays = this.state.selectedDays.concat();
-  //   if (selected) {
-  //     const selectedIndex = selectedDays.findIndex(selectedDay =>
-  //       DateUtils.isSameDay(selectedDay, day)
-  //     );
-  //     selectedDays.splice(selectedIndex, 1);
-  //   } else {
-  //     selectedDays.push(day);
-  //   }
-  //   this.setState({ selectedDays });
-  // }
+  const handleDayClick = (day: Date, modifiers: DayModifiers) => {
+    let newPushDays = [...pushDays];
+    let newPullDays = [...pullDays];
+
+    if (modifiers.selected) {
+      // if in pushDays
+      // move to pull days
+
+      if (pushDays.some((pushDay) => DateUtils.isSameDay(pushDay, day))) {
+        newPushDays = [...pushDays].filter(
+          (selectedDay) => !DateUtils.isSameDay(selectedDay, day)
+        );
+
+        newPullDays = [...pullDays, day];
+        // if in pull days
+        // remove
+      } else {
+        newPullDays = [...pullDays].filter(
+          (pullDay) => !DateUtils.isSameDay(pullDay, day)
+        );
+      }
+    } else {
+      newPushDays = [...pushDays, day];
+    }
+
+    setPushDays(newPushDays);
+    setPullDays(newPullDays);
+    onDaysChange(newPushDays, newPullDays);
+  };
+
+  const pushModifier = (day: Date) => {
+    return pushDays.some((pushDay) => DateUtils.isSameDay(pushDay, day));
+  };
+
+  const pullModifier = (day: Date) => {
+    return pullDays.some((pullDay) => DateUtils.isSameDay(pullDay, day));
+  };
 
   return (
     <div>
@@ -90,13 +141,11 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
             </div>
             <div className="column">
               <DevicePanel title="Power exchange days">
-                <div>
-                  <button onClick={onDaysChange}>asdasd</button>
-                </div>
-                {/* <DayPicker
-                  selectedDays={this.state.selectedDays}
-                  onDayClick={this.handleDayClick}
-                /> */}
+                <DayPicker
+                  selectedDays={[...pushDays, ...pullDays]}
+                  onDayClick={handleDayClick}
+                  modifiers={{ pushModifier, pullModifier }}
+                />
               </DevicePanel>
             </div>
           </div>
