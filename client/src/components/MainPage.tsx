@@ -4,7 +4,14 @@ import { HouseInspect } from "./HouseInspect";
 import { DevicePanel } from "./DevicePanel";
 import { ControlPanel } from "./ControlPanel";
 import { SingleData } from "./SingleData";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Paper } from "@material-ui/core";
+import {
+  ArgumentAxis,
+  ValueAxis,
+  Chart,
+  LineSeries,
+} from "@devexpress/dx-react-chart-material-ui";
+import { PhotovoltaicPanelPreview } from "./PhotovoltaicPanelPreview";
 
 export const MainPage: React.FC = () => {
   const [response, setResponse] = useState<any>({});
@@ -101,7 +108,7 @@ export const MainPage: React.FC = () => {
               <div className="devices-wrapper">
                 <div className="device-column">
                   <DevicePanel title="Photovoltaic panels">
-                    <span>{`Power production: ${response.building.panels.efficiency} kWh`}</span>
+                    <PhotovoltaicPanelPreview data={response.building.panels} />
                   </DevicePanel>
                   <DevicePanel title="Battery">
                     <SingleData
