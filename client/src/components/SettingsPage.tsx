@@ -141,11 +141,26 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
             </div>
             <div className="column">
               <DevicePanel title="Power exchange days">
-                <DayPicker
-                  selectedDays={[...pushDays, ...pullDays]}
-                  onDayClick={handleDayClick}
-                  modifiers={{ pushModifier, pullModifier }}
-                />
+                <div style={{ display: "flex", flex: 1 }}>
+                  <DayPicker
+                    selectedDays={[...pushDays, ...pullDays]}
+                    onDayClick={handleDayClick}
+                    modifiers={{ pushModifier, pullModifier }}
+                  />
+                  <div
+                    style={{
+                      textAlign: "center",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flex: "1",
+                    }}
+                  >
+                    <p style={{ fontSize: "24px" }}>Total cost</p>
+                    <p style={{ fontSize: "24px", margin: "10px 0 0 0" }}>45</p>
+                  </div>
+                </div>
               </DevicePanel>
             </div>
           </div>
