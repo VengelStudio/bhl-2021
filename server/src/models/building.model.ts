@@ -46,7 +46,8 @@ export class Building {
 
   public getConsumption() {
     let powerConsumption = 0;
-    this.rooms.forEach(room => { (room.is_heated === true) ? powerConsumption += room.heating_power : "" });
+    this.rooms.forEach(room => { (room.is_heated === true) ? powerConsumption += room.heating_power + this.waterStorage.heating_power : "" });
+    console.log("powerConsumption:", powerConsumption);
     return powerConsumption;
   }
 
@@ -85,8 +86,8 @@ export class Building {
 
     
 
-    // console.table([0,1,2,3,4,5,6].map(id=> ({is_heated:this.rooms[id].is_heated, current_temperature:this.rooms[id].current_temperature, 
-    //   target_temperature: this.rooms[id].target_temperature, differenceCheck: this.differenceCheck(this.rooms[id]), newTime})));
+    console.table([0,1,2,3,4,5,6].map(id=> ({is_heated:this.rooms[id].is_heated, current_temperature:this.rooms[id].current_temperature, 
+      target_temperature: this.rooms[id].target_temperature, differenceCheck: this.differenceCheck(this.rooms[id]), newTime})));
 
 
   }
@@ -100,8 +101,11 @@ export class Building {
   public heatRooms() {
     this.rooms.forEach(room => {this.differenceCheck(room) ? room.is_heated = true : room.is_heated = false});
     this.rooms.forEach(room => {room.is_heated ? room.current_temperature += 1/6 : room.current_temperature += this.temperatureDecrease(this.sensors.outside.temperature) })
+    let consumption = 0;
 
-    while(this.getConsumption() > 10){
+   
+    while(consumption >= 10){
+      consumption = this.getConsumption();
       this.rooms[this.getRoomWithMinDifference().id].is_heated = false; 
     }
   
