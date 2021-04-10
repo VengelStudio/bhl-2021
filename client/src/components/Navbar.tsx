@@ -70,9 +70,8 @@ export const Navbar: React.FC = () => {
   }
 
   const getFormattedDate = (date: Date) => {
-    console.log(date);
     return `${checkDayOfTheWeek(
-      date.getUTCDate()
+      date.getUTCDay()
     )}, ${date.getUTCDate()} ${date.toLocaleString("default", {
       month: "long",
     })} ${date.getUTCFullYear()} ${hours}:${minutes}`;

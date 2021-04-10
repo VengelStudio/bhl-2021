@@ -21,16 +21,18 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
 
   useEffect(() => {
     if (response?.building?.powerExchange) {
-      setPushDays(
-        response.building?.powerExchange.pushDays.map(
-          (d: SimpleDay) => new Date(Date.UTC(d.year, d.month, d.day))
-        )
-      );
-      setPullDays(
-        response.building?.powerExchange.pullDays.map(
-          (d: SimpleDay) => new Date(Date.UTC(d.year, d.month, d.day))
-        )
-      );
+      pushDays.length === 0 &&
+        setPushDays(
+          response.building?.powerExchange.pushDays.map(
+            (d: SimpleDay) => new Date(Date.UTC(d.year, d.month, d.day))
+          )
+        );
+      pullDays.length === 0 &&
+        setPullDays(
+          response.building?.powerExchange.pullDays.map(
+            (d: SimpleDay) => new Date(Date.UTC(d.year, d.month, d.day))
+          )
+        );
     }
   }, [response]);
 
@@ -48,19 +50,19 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
       });
   };
 
-  const onDaysChange = (push: Date[], pull: Date[]) => {
+  const onDaysChange = () => {
     fetch("http://localhost:5000/building/power-exchange/days", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        pushDays: push.map((day) => ({
+        pushDays: pushDays.map((day) => ({
           day: day.getUTCDate(),
           month: day.getUTCMonth(),
           year: day.getUTCFullYear(),
         })) as SimpleDay[],
-        pullDays: pull.map((day) => ({
+        pullDays: pullDays.map((day) => ({
           day: day.getUTCDate(),
           month: day.getUTCMonth(),
           year: day.getUTCFullYear(),
@@ -100,7 +102,6 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
 
     setPushDays(newPushDays);
     setPullDays(newPullDays);
-    onDaysChange(newPushDays, newPullDays);
   };
 
   const pushModifier = (day: Date) => {
@@ -142,11 +143,14 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
             <div className="column">
               <DevicePanel title="Power exchange days">
                 <div style={{ display: "flex", flex: 1 }}>
-                  <DayPicker
-                    selectedDays={[...pushDays, ...pullDays]}
-                    onDayClick={handleDayClick}
-                    modifiers={{ pushModifier, pullModifier }}
-                  />
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <DayPicker
+                      selectedDays={[...pushDays, ...pullDays]}
+                      onDayClick={handleDayClick}
+                      modifiers={{ pushModifier, pullModifier }}
+                    />
+                    <Button onClick={onDaysChange}>Save</Button>
+                  </div>
                   <div
                     style={{
                       textAlign: "center",
