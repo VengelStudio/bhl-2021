@@ -3,10 +3,30 @@ import { clear } from "node:console";
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/Home";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 import SettingsIcon from "@material-ui/icons/Settings";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import Typography from "@material-ui/core/Typography";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
 
 export const Navbar: React.FC = () => {
   const [response, setResponse] = useState<any>({});
+  const [open, setOpen] = React.useState(false);
+
+  const handleSimulationDateChange = (event: Date) => {
+    // setAge(Number(event.target.value) || "");
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     setInterval(() => {
@@ -82,6 +102,28 @@ export const Navbar: React.FC = () => {
           <span>Loading...</span>
         )}
       </p>
+
+      <Button style={{ marginLeft: "auto" }} onClick={handleClickOpen}>
+        <VisibilityIcon></VisibilityIcon>
+      </Button>
+
+      <Dialog
+        disableBackdropClick
+        disableEscapeKeyDown
+        open={open}
+        onClose={handleClose}
+      >
+        <DialogTitle>Set simulation day</DialogTitle>
+        <DialogContent>xdd</DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleClose} color="primary">
+            Ok
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
