@@ -8,18 +8,30 @@ export interface SimpleDay {
 export class PowerExchange {
   public pushDays: SimpleDay[] = [];
   public pullDays: SimpleDay[] = [];
+  public totalCost: number = 0;
 
   public setDays(pushDays: SimpleDay[], pullDays: SimpleDay[]) {
     this.pushDays = pushDays;
     this.pullDays = pullDays;
   }
 
-  getPullCost(time: Date) {
+  getTotalCost(){
+    this.pushDays.forEach(day => {
+      this.totalCost += this.getPullCost(day);
+    });
+  }
+
+  createDate(day: SimpleDay){
+    return new Date(day.year, day.month,day.day)
+  }
+
+  getPullCost(day: SimpleDay) {
+    let time = this.createDate(day)
     let energyFromNetworkCost = 0;
     const isWeekend = isBetween(time.getUTCDay() + 1, { a: 6, b: 7 });
     const isHoliday = isBetween(time.getUTCMonth() + 1, { a: 7, b: 9 });
     const isWorkday = !isWeekend;
-    const hours = time.getUTCHours();
+    const hours = Math.floor(Math.random() * (0 - 24)) + 24;
     const month = time.getMonth();
     if ([1, 2, 3, 10, 11, 12].includes(month)) {
       if (isWorkday) {
