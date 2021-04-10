@@ -59,7 +59,7 @@ export const PhotovoltaicPanelPreview: React.FC<PhotovoltaicPanelPreviewProps> =
           <ValueAxis labelComponent={ValueLabel} />
 
           <LineSeries
-            color="#000000"
+            color="#096192"
             valueField="value"
             argumentField="argument"
           />
