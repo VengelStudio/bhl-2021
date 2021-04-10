@@ -48,19 +48,19 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
       });
   };
 
-  const onDaysChange = () => {
+  const onDaysChange = (push: Date[], pull: Date[]) => {
     fetch("http://localhost:5000/building/power-exchange/days", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        pushDays: pushDays.map((day) => ({
+        pushDays: push.map((day) => ({
           day: day.getUTCDate(),
           month: day.getUTCMonth(),
           year: day.getUTCFullYear(),
         })) as SimpleDay[],
-        pullDays: pullDays.map((day) => ({
+        pullDays: pull.map((day) => ({
           day: day.getUTCDate(),
           month: day.getUTCMonth(),
           year: day.getUTCFullYear(),
@@ -74,29 +74,33 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
   };
 
   const handleDayClick = (day: Date, modifiers: DayModifiers) => {
+    let newPushDays = [...pushDays];
+    let newPullDays = [...pullDays];
+
     if (modifiers.selected) {
       // if in pushDays
       // move to pull days
 
       if (pushDays.some((pushDay) => DateUtils.isSameDay(pushDay, day))) {
-        setPushDays(
-          [...pushDays].filter(
-            (selectedDay) => !DateUtils.isSameDay(selectedDay, day)
-          )
+        newPushDays = [...pushDays].filter(
+          (selectedDay) => !DateUtils.isSameDay(selectedDay, day)
         );
-        setPullDays([...pullDays, day]);
+
+        newPullDays = [...pullDays, day];
         // if in pull days
         // remove
       } else {
-        setPullDays(
-          [...pullDays].filter((pullDay) => !DateUtils.isSameDay(pullDay, day))
+        newPullDays = [...pullDays].filter(
+          (pullDay) => !DateUtils.isSameDay(pullDay, day)
         );
       }
     } else {
-      setPushDays([...pushDays, day]);
+      newPushDays = [...pushDays, day];
     }
 
-    onDaysChange();
+    setPushDays(newPushDays);
+    setPullDays(newPullDays);
+    onDaysChange(newPushDays, newPullDays);
   };
 
   const pushModifier = (day: Date) => {
