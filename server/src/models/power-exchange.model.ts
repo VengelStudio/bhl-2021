@@ -6,8 +6,8 @@ export interface SimpleDay {
   year: number;
 }
 export class PowerExchange {
-  public pushedDays: SimpleDay[] = [];
-  public pulledDays: SimpleDay[] = [];
+  public pushDays: SimpleDay[] = [];
+  public pullDays: SimpleDay[] = [];
 
   getPullCost(time: Date) {
     let energyFromNetworkCost = 0;
