@@ -1,13 +1,14 @@
 import React from "react";
 import WhatshotOutlinedIcon from "@material-ui/icons/WhatshotOutlined";
 import ArrowRightAltOutlinedIcon from "@material-ui/icons/ArrowRightAltOutlined";
-import { Icon } from "@material-ui/core";
+import { Icon, Typography } from "@material-ui/core";
 
 interface props {
   name: string;
   temperature: number;
   targetTemperature: number;
   heating: boolean;
+  tint: string;
 }
 
 export const RoomBox: React.FC<props> = ({
@@ -15,21 +16,23 @@ export const RoomBox: React.FC<props> = ({
   temperature,
   targetTemperature,
   heating,
+  tint,
 }) => {
   return (
-    <div className="room-box">
-      <p className="room-box__name">{name}</p>
+    <div className="room-box" style={{ borderColor: tint }}>
+      <h5 className="room-box__name">{name}</h5>
       <div
         style={{
           display: "flex",
           alignItems: "flex-start",
           flexDirection: "column",
+          marginTop: "4px",
         }}
       >
         <span style={{ display: "flex", alignItems: "center" }}>
-          <span className="room-box__temperature">
+          <Typography variant="body2" className="room-box__temperature">
             Temperature: {`${temperature}°C`}
-          </span>
+          </Typography>
           {heating ? (
             <Icon style={{ transform: "rotate(-90deg)" }} color="secondary">
               <ArrowRightAltOutlinedIcon />
@@ -40,11 +43,9 @@ export const RoomBox: React.FC<props> = ({
             </Icon>
           )}
         </span>
-        <span style={{ marginTop: "10px" }}>
-          <span className="room-box__temperature">
-            Target temperature: {`${targetTemperature}°C`}
-          </span>
-        </span>
+        <Typography variant="body2" className="room-box__temperature">
+          Target temperature: {`${targetTemperature}°C`}
+        </Typography>
       </div>
     </div>
   );

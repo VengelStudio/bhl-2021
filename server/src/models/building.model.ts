@@ -29,13 +29,13 @@ const getTargetTemperature = (time: Date) => {
 
 export class Building {
   public rooms: Room[] = [
-    new Room({ id: 1, heatingPower: 1 }),
-    new Room({ id: 2, heatingPower: 1 }),
-    new Room({ id: 3, heatingPower: 1.5 }),
-    new Room({ id: 4, heatingPower: 1.5 }),
-    new Room({ id: 5, heatingPower: 2 }),
-    new Room({ id: 6, heatingPower: 2 }),
-    new Room({ id: 7, heatingPower: 3 }),
+    new Room({ id: 1, heatingPower: 1, name: 'Kitchen', tint: '#8c892e47' }),
+    new Room({ id: 2, heatingPower: 1, name: 'Bathroom', tint: '#2e608c47' }),
+    new Room({ id: 3, heatingPower: 1.5, name: 'Living room', tint: '#528c2e47' }),
+    new Room({ id: 4, heatingPower: 1.5, name: 'Bedroom', tint: '#23232347' }),
+    new Room({ id: 5, heatingPower: 2, name: 'Guest bedroom', tint: '#2a495847' }),
+    new Room({ id: 6, heatingPower: 2, name: 'Dining room', tint: '#9a559e47' }),
+    new Room({ id: 7, heatingPower: 3, name: 'Utility room', tint: '#decd4c47' }),
   ];
   public sensors: Sensors = new Sensors();
   public panels: Panels = new Panels();
@@ -46,50 +46,47 @@ export class Building {
 
   public getConsumption() {
     let powerConsumption = 0;
-    this.rooms.forEach(room => { (room.is_heated === true) ? powerConsumption += room.heating_power + this.waterStorage.heating_power : "" });
-    console.log("powerConsumption:", powerConsumption);
+    this.rooms.forEach(room => {
+      room.is_heated === true ? (powerConsumption += room.heating_power + this.waterStorage.heating_power) : '';
+    });
+    console.log('powerConsumption:', powerConsumption);
     return powerConsumption;
   }
 
-
-
-
-
   public recalculate(newTime: Date) {
-
     const sensorData = this.sensors.getValues(newTime);
 
     this.rooms.forEach(room => room.setTargetTemperature(getTargetTemperature(newTime)));
 
-    // const panelEfficiency = this.panels.getEfficiency(newTime, this.sensors.clearSkyRatio);
+    const panelEfficiency = this.panels.getEfficiency(newTime, this.sensors.outside.clearSkyRatio);
 
     this.heatRooms();
     this.waterStorage.size -= 1.25;
-    console.log("waterBefore: " , this.waterStorage.size)
+    console.log('waterBefore: ', this.waterStorage.size);
 
-    if (this.waterStorage.size < 30){
-
+    if (this.waterStorage.size < 30) {
       this.waterStorage.heating_power = 6;
       shouldWaterBeHeated = true;
-     
-    }
-    else if (this.waterStorage.size >= 150) { 
+    } else if (this.waterStorage.size >= 150) {
       this.waterStorage.size = 150;
       this.waterStorage.heating_power = 0;
-     shouldWaterBeHeated = false;
+      shouldWaterBeHeated = false;
     }
 
-    if (shouldWaterBeHeated){
-      this.waterHeating()
-      console.log("waterStorageAfterRefill: ", this.waterStorage.size);
+    if (shouldWaterBeHeated) {
+      this.waterHeating();
+      console.log('waterStorageAfterRefill: ', this.waterStorage.size);
     }
 
-    
-
-    console.table([0,1,2,3,4,5,6].map(id=> ({is_heated:this.rooms[id].is_heated, current_temperature:this.rooms[id].current_temperature, 
-      target_temperature: this.rooms[id].target_temperature, differenceCheck: this.differenceCheck(this.rooms[id]), newTime})));
-
-
+    console.table(
+      [0, 1, 2, 3, 4, 5, 6].map(id => ({
+        is_heated: this.rooms[id].is_heated,
+        current_temperature: this.rooms[id].current_temperature,
+        target_temperature: this.rooms[id].target_temperature,
+        differenceCheck: this.differenceCheck(this.rooms[id]),
+        newTime,
+      })),
+    );
   }
 
   public differenceCheck(room: Room) {
@@ -99,26 +96,26 @@ export class Building {
   }
 
   public heatRooms() {
-    this.rooms.forEach(room => {this.differenceCheck(room) ? room.is_heated = true : room.is_heated = false});
-    this.rooms.forEach(room => {room.is_heated ? room.current_temperature += 1/6 : room.current_temperature += this.temperatureDecrease(this.sensors.outside.temperature) })
+    this.rooms.forEach(room => {
+      this.differenceCheck(room) ? (room.is_heated = true) : (room.is_heated = false);
+    });
+    this.rooms.forEach(room => {
+      room.is_heated ? (room.current_temperature += 1 / 6) : (room.current_temperature += this.temperatureDecrease(this.sensors.outside.temperature));
+    });
     let consumption = 0;
 
-   
-    while(consumption >= 10){
+    while (consumption >= 10) {
       consumption = this.getConsumption();
-      this.rooms[this.getRoomWithMinDifference().id].is_heated = false; 
+      this.rooms[this.getRoomWithMinDifference().id].is_heated = false;
     }
-  
   }
-
 
   public waterHeating() {
     waterPowerConsumption = 6;
     this.waterStorage.size += 25;
   }
 
-  public temperatureDecrease(temperature : number){
-
+  public temperatureDecrease(temperature: number) {
     let temperatureDecrease = 0;
 
     switch (true) {
@@ -152,21 +149,20 @@ export class Building {
     return temperatureDecrease;
   }
 
-  public getRoomWithMinDifference(){
-    let differenceArray=[]
-    let heatedRooms=[];
-    this.rooms.forEach(room => {room.is_heated ? heatedRooms.push(room) : "" });
+  public getRoomWithMinDifference() {
+    let differenceArray = [];
+    let heatedRooms = [];
+    this.rooms.forEach(room => {
+      room.is_heated ? heatedRooms.push(room) : '';
+    });
 
-
-    for(let i=0; i< heatedRooms.length ;i++){
-      differenceArray.push({'id':heatedRooms[i].id,
-      'difference':heatedRooms[i].current_temperature - heatedRooms[i].target_temperature})
+    for (let i = 0; i < heatedRooms.length; i++) {
+      differenceArray.push({ id: heatedRooms[i].id, difference: heatedRooms[i].current_temperature - heatedRooms[i].target_temperature });
     }
 
-    return differenceArray.reduce(function(prev, curr) {
+    return differenceArray.reduce(function (prev, curr) {
       return prev.difference < curr.difference ? prev : curr;
-    })
-
+    });
   }
 }
 

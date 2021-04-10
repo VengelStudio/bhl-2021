@@ -1,3 +1,4 @@
+import Divider from "@material-ui/core/Divider";
 import { clear } from "node:console";
 import React, { useEffect, useState } from "react";
 
@@ -25,13 +26,6 @@ export const Navbar: React.FC = () => {
 
   let dayOfTheWeek = checkDayOfTheWeek(new Date(response.time).getUTCDay());
 
-  let clearSkyRatio =
-    Object.keys(response).length !== 0
-      ? `${Math.round(
-          (1 - response.building.sensors.outside.clearSkyRatio) * 100
-        )}%`
-      : "Loading..";
-
   function checkDayOfTheWeek(day: any) {
     if (day === 0) {
       return "Sunday";
@@ -49,28 +43,25 @@ export const Navbar: React.FC = () => {
       return "Saturday";
     }
   }
+
+  const getFormattedDate = (date: Date) => {
+    return `${checkDayOfTheWeek(date.getUTCDay())}, ${
+      date.getUTCDay() + 1
+    } ${date.toLocaleString("default", {
+      month: "long",
+    })} ${date.getUTCFullYear()} ${hours}:${minutes}`;
+  };
+
   return (
     <div className="navbar">
       <div className="navbar__box">
-        <p>Day of the week:</p>
         {Object.keys(response).length !== 0 ? (
-          <p className="navbar__time">{dayOfTheWeek}</p>
+          <span>{getFormattedDate(new Date(response.time))}</span>
         ) : (
-          <p className="navbar__time">Loading...</p>
+          <span>Loading...</span>
         )}
       </div>
-      <div className="navbar__box">
-        <p>Time:</p>
-        {Object.keys(response).length !== 0 ? (
-          <p className="navbar__time">{`${hours}:${minutes}`}</p>
-        ) : (
-          <p className="navbar__time">Loading...</p>
-        )}
-      </div>
-      <div className="navbar__box">
-        <p>Cloud cover:</p>
-        <p className="navbar__cloud">{clearSkyRatio}</p>
-      </div>
+      <Divider orientation="vertical" />
     </div>
   );
 };

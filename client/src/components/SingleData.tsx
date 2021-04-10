@@ -1,3 +1,4 @@
+import Typography from "@material-ui/core/Typography";
 import React from "react";
 
 interface props {
@@ -7,9 +8,8 @@ interface props {
 
 export const SingleData: React.FC<props> = ({ label, value }) => {
   return (
-    <span className="data-line">
-      <span className="data-line__label">{label}:</span>
-      <span className="data-line__value">{value}</span>
-    </span>
+    <Typography className="data-line" variant="body2">
+      <span className="data-line__label">{`${label}: ${value}`}</span>
+    </Typography>
   );
 };

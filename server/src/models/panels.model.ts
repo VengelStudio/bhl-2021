@@ -171,6 +171,8 @@ const calculateEfficiency = (hour: number, month: number, clearSkyRatio: number)
 };
 export class Panels {
   public efficiency = 0;
+  public power_today = 0;
+  public today_day = -1;
 
   // returns kW
   public getEfficiency(time: Date, clearSkyRatio: number) {
@@ -180,6 +182,13 @@ export class Panels {
     let calculatedEfficiency = calculateEfficiency(hour, monthNatural, clearSkyRatio);
 
     this.efficiency = calculatedEfficiency;
+
+    if (time.getUTCDay() !== this.today_day) {
+      this.power_today = 0;
+      this.today_day = time.getUTCDay();
+    } else {
+      this.power_today += calculatedEfficiency * (1 / 6);
+    }
 
     return calculatedEfficiency;
   }
