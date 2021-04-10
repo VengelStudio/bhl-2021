@@ -47,18 +47,43 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
       });
   };
 
-  const [selectedDays, setSelectedDays] = useState<Date[]>([]);
+  const [pushDays, setPushDays] = useState<Date[]>([]);
+  const [pullDays, setPullDays] = useState<Date[]>([]);
 
   const handleDayClick = (day: Date, modifiers: DayModifiers) => {
     if (modifiers.selected) {
-      setSelectedDays(
-        [...selectedDays].filter(
+      // if in pushDays
+      // move to pull days
+
+      // if in pull days
+      // remove
+      setPushDays(
+        [...pushDays].filter(
           (selectedDay) => !DateUtils.isSameDay(selectedDay, day)
         )
       );
     } else {
-      setSelectedDays([...selectedDays, day]);
+      setPushDays([...pushDays, day]);
     }
+  };
+
+  const pushModifier = (day: Date) => {
+    return pushDays.some((pushDay) => DateUtils.isSameDay(pushDay, day));
+  };
+
+  const pullModifier = (day: Date) => {
+    return pullDays.some((pullDay) => DateUtils.isSameDay(pullDay, day));
+  };
+
+  const modifiersStyles = {
+    pushModifier: {
+      color: "white",
+      backgroundColor: "#ffc107",
+    },
+    pullModifier: {
+      color: "#ffc107",
+      backgroundColor: "#fffdee",
+    },
   };
 
   return (
@@ -95,8 +120,10 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
                   <button onClick={onDaysChange}>asdasd</button>
                 </div>
                 <DayPicker
-                  selectedDays={selectedDays}
+                  selectedDays={[...pushDays, ...pullDays]}
                   onDayClick={handleDayClick}
+                  modifiers={{ pushModifier, pullModifier }}
+                  modifiersStyles={modifiersStyles}
                 />
               </DevicePanel>
             </div>
