@@ -6,7 +6,6 @@ import {
   Chart,
   LineSeries,
 } from "@devexpress/dx-react-chart-material-ui";
-
 export interface PhotovoltaicPanelPreviewProps {
   response: any;
 }

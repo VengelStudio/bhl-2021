@@ -7,6 +7,7 @@ import {
   PieSeries,
 } from "@devexpress/dx-react-chart-material-ui";
 import { SingleData } from "./SingleData";
+import { Animation } from "@devexpress/dx-react-chart";
 
 export interface EnergyStatisticsProps {
   response: any;
@@ -46,27 +47,36 @@ export const EnergyStatistics: React.FC<EnergyStatisticsProps> = ({
   }, [response]);
 
   return (
-    <>
-      <Paper>
-        <Chart height={200} data={calculatedData}>
-          <PieSeries valueField="value" argumentField="argument" />
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <div style={{ width: "66%" }}>
+        <Paper>
+          <Chart height={200} data={calculatedData}>
+            <PieSeries valueField="value" argumentField="argument" />
 
-          <Legend />
-        </Chart>
-      </Paper>
+            <Legend />
 
-      <SingleData
-        label="Hot water level"
-        value={`${Math.floor((waterData.size / 150) * 100)} %`}
-      />
-      <SingleData label="Power usage" value={`${waterData.heating_power} kW`} />
+            <Animation />
+          </Chart>
+        </Paper>
+      </div>
 
-      <Typography variant="body2">
-        {`Battery charge level: ${response.building.battery.batteryLevel}%`}
-      </Typography>
-      <Typography variant="body2">
-        {`Battery capacity: ${response.building.battery.capacity} kWh`}
-      </Typography>
-    </>
+      <div style={{}}>
+        <SingleData
+          label="Hot water level"
+          value={`${Math.floor((waterData.size / 150) * 100)} %`}
+        />
+        <SingleData
+          label="Power usage"
+          value={`${waterData.heating_power} kW`}
+        />
+
+        <Typography variant="body2">
+          {`Battery charge level: ${response.building.battery.batteryLevel}%`}
+        </Typography>
+        <Typography variant="body2">
+          {`Battery capacity: ${response.building.battery.capacity} kWh`}
+        </Typography>
+      </div>
+    </div>
   );
 };
