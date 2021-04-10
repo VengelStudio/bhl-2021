@@ -47,7 +47,7 @@ export class Building {
   public getConsumption() {
     let powerConsumption = 0;
     this.rooms.forEach(room => {
-      room.is_heated === true ? (powerConsumption += room.heating_power + this.waterStorage.heating_power) : '';
+      room.is_heated === true ? (powerConsumption += room.heating_power + this.waterStorage.heating_power ) : '';
     });
     console.log('powerConsumption:', powerConsumption);
     return powerConsumption;
@@ -56,6 +56,22 @@ export class Building {
   public recalculate(newTime: Date) {
     const sensorData = this.sensors.getValues(newTime);
 
+// MODE A
+
+    if(this.powerManager.mode === 'a'){
+      let powerWithSolar = this.getConsumption() - solarEfficiency;
+
+        if(powerWithSolar > 0){
+          powerFromNetworkUsage = powerWithSolar;
+        }
+
+        else{
+          //charging
+        }
+          }
+
+
+
     this.rooms.forEach(room => room.setTargetTemperature(getTargetTemperature(newTime)));
 
     const panelEfficiency = this.panels.getEfficiency(newTime, this.sensors.outside.clearSkyRatio);
@@ -63,6 +79,11 @@ export class Building {
     this.heatRooms();
     this.waterStorage.size -= 1.25;
     console.log('waterBefore: ', this.waterStorage.size);
+
+    if (shouldWaterBeHeated) {
+      this.waterHeating();
+      console.log('waterStorageAfterRefill: ', this.waterStorage.size);
+    }
 
     if (this.waterStorage.size < 30) {
       this.waterStorage.heating_power = 6;
@@ -73,10 +94,7 @@ export class Building {
       shouldWaterBeHeated = false;
     }
 
-    if (shouldWaterBeHeated) {
-      this.waterHeating();
-      console.log('waterStorageAfterRefill: ', this.waterStorage.size);
-    }
+   
 
     console.table(
       [0, 1, 2, 3, 4, 5, 6].map(id => ({
@@ -164,11 +182,28 @@ export class Building {
       return prev.difference < curr.difference ? prev : curr;
     });
   }
+
+
+// MODE 1
+
+public solarEnergyForM1(newDate : Date){
+
+  solarEfficiency  = this.panels.getEfficiency(newDate, this.sensors.outside.clearSkyRatio);    
+}
+
+
+
+
+
+
 }
 
 // starting values here
 const defaultBuilding: Building = new Building();
 let shouldWaterBeHeated = false;
 let waterPowerConsumption = 0;
+let solarEfficiency = 0;
+let powerFromNetworkUsage = 0;
+let powerGivenToNetwork = 0;
 
 export default defaultBuilding;
