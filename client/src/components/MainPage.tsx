@@ -60,37 +60,34 @@ export const MainPage: React.FC = () => {
             style={{ display: "flex", width: "100%", minHeight: "100%" }}
           >
             <div className="column">
-              <HouseInspect data={response} />
-              <div className="parameters">
-                <DevicePanel title="Outside parameters">
-                  <SingleData
-                    label="Outside temperature"
-                    value={`${temperatureOutside} °C` || "<brak>"}
-                  />
-                </DevicePanel>
-                <DevicePanel title="Water storage">
-                  {Object.keys(waterData).map(function (key) {
-                    let translatedKey;
+              <DevicePanel title="Room inspect">
+                <HouseInspect data={response} />
+              </DevicePanel>
+              <DevicePanel title="Outside parameters">
+                <SingleData
+                  label="Outside temperature"
+                  value={`${temperatureOutside} °C` || "<brak>"}
+                />
+              </DevicePanel>
+              <DevicePanel title="Water storage">
+                {Object.keys(waterData).map(function (key) {
+                  let translatedKey;
 
-                    function translate() {
-                      if (key === "size") {
-                        translatedKey = "Size";
-                      } else if (key === "heating_power") {
-                        translatedKey = "Heating power";
-                      } else if (key === "heating_rate_per_minute") {
-                        translatedKey = "Heating rate per minute";
-                      }
+                  function translate() {
+                    if (key === "size") {
+                      translatedKey = "Size";
+                    } else if (key === "heating_power") {
+                      translatedKey = "Heating power";
+                    } else if (key === "heating_rate_per_minute") {
+                      translatedKey = "Heating rate per minute";
                     }
-                    translate();
-                    return (
-                      <SingleData
-                        label={translatedKey}
-                        value={waterData[key]}
-                      />
-                    );
-                  })}
-                </DevicePanel>
-              </div>
+                  }
+                  translate();
+                  return (
+                    <SingleData label={translatedKey} value={waterData[key]} />
+                  );
+                })}
+              </DevicePanel>
             </div>
             <div className="column">
               <div className="devices-wrapper">

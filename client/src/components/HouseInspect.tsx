@@ -7,21 +7,18 @@ interface props {
 
 export const HouseInspect: React.FC<props> = ({ data }) => {
   return (
-    <div className="house-inspect">
-      <h2 className="house-inspect__title">Room inspect</h2>
-      <div className="house-inspect__rooms">
-        {Object.values(data.building.rooms).map((room: any) => {
-          return (
-            <RoomBox
-              key={room.id}
-              name={`Room ${room.id}`}
-              temperature={Math.round(room.current_temperature * 100) / 100}
-              targetTemperature={Math.round(room.target_temperature)}
-              heating={room.is_heated}
-            />
-          );
-        })}
-      </div>
+    <div className="house-inspect__rooms">
+      {Object.values(data.building.rooms).map((room: any) => {
+        return (
+          <RoomBox
+            key={room.id}
+            name={`Room ${room.id}`}
+            temperature={Math.round(room.current_temperature)}
+            targetTemperature={Math.round(room.target_temperature)}
+            heating={room.is_heated}
+          />
+        );
+      })}
     </div>
   );
 };
