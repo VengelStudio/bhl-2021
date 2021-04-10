@@ -48,21 +48,20 @@ export class Building {
   public getConsumption() {
     let powerConsumption = 0;
     this.rooms.forEach(room => {
-      room.is_heated === true ? (powerConsumption += room.heating_power + this.waterStorage.heating_power + additionalEnergyConsumed) : '';
+      room.is_heated === true ? (powerConsumption += room.heating_power + this.waterStorage.heating_power ) : '';
     });
-    this.energyConsumption = powerConsumption;
+    this.energyConsumption = powerConsumption + additionalEnergyConsumed;
 
+    console.log("power consumption:", powerConsumption + additionalEnergyConsumed);
 
-    return powerConsumption;
+    return powerConsumption + additionalEnergyConsumed;
   }
 
   public recalculate(newTime: Date) {
     const sensorData = this.sensors.getValues(newTime);
     this.solarEnergy(newTime);
     this.getAdditionalEnergyConsumed(newTime);
-    if(this.battery.currentCharge > 0){
-      this.battery.dischargeBattery();
-    }
+
     this.battery.calculateBatteryLevel();
 
 // MODE A
@@ -110,6 +109,10 @@ export class Building {
 // MODE D
       if (this.powerManager.mode === 'd'){
         let powerWithSolarAndBattery = this.getConsumption() - solarEfficiency - this.battery.getEfficiency();
+
+        if(this.battery.currentCharge > 0){
+          this.battery.dischargeBattery();
+        }
 
         if (powerWithSolarAndBattery > 0){
           powerFromNetworkUsage = powerWithSolarAndBattery;
@@ -275,7 +278,7 @@ export class Building {
     }else if(isHoliday){
       additionalEnergyConsumed = 0.5;
     }
-    console.log('additional energy consumed', additionalEnergyConsumed)
+    // console.log('additional energy consumed', additionalEnergyConsumed)
   }
 
 
