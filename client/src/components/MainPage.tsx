@@ -4,7 +4,7 @@ import { HouseInspect } from "./HouseInspect";
 import { DevicePanel } from "./DevicePanel";
 import { ControlPanel } from "./ControlPanel";
 import { SingleData } from "./SingleData";
-import { CircularProgress, Paper } from "@material-ui/core";
+import { CircularProgress, Paper, Typography } from "@material-ui/core";
 import {
   ArgumentAxis,
   ValueAxis,
@@ -106,13 +106,16 @@ export const MainPage: React.FC = () => {
                 </div>
                 <div style={{ width: "50%" }}>
                   <DevicePanel title="Battery">
-                    <span>{`Capacity: ${response.building.battery.capacity} kWh`}</span>
-                    <br></br>
-                    <span>{`Charge level: ${`${Math.round(
-                      (response.building.battery.currentCharge /
-                        response.building.battery.capacity) *
-                        100
-                    )}%`}`}</span>
+                    <Typography variant="body2">
+                      {`Capacity: ${response.building.battery.capacity} kWh`}
+                    </Typography>
+                    <Typography variant="body2">
+                      {`Charge level: ${`${Math.round(
+                        (response.building.battery.currentCharge /
+                          response.building.battery.capacity) *
+                          100
+                      )}%`}`}
+                    </Typography>
                   </DevicePanel>
                 </div>
               </div>

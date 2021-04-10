@@ -1,7 +1,7 @@
 import React from "react";
 import WhatshotOutlinedIcon from "@material-ui/icons/WhatshotOutlined";
 import ArrowRightAltOutlinedIcon from "@material-ui/icons/ArrowRightAltOutlined";
-import { Icon } from "@material-ui/core";
+import { Icon, Typography } from "@material-ui/core";
 
 interface props {
   name: string;
@@ -26,12 +26,13 @@ export const RoomBox: React.FC<props> = ({
           display: "flex",
           alignItems: "flex-start",
           flexDirection: "column",
+          marginTop: "4px",
         }}
       >
         <span style={{ display: "flex", alignItems: "center" }}>
-          <span className="room-box__temperature">
+          <Typography variant="body2" className="room-box__temperature">
             Temperature: {`${temperature}°C`}
-          </span>
+          </Typography>
           {heating ? (
             <Icon style={{ transform: "rotate(-90deg)" }} color="secondary">
               <ArrowRightAltOutlinedIcon />
@@ -42,11 +43,9 @@ export const RoomBox: React.FC<props> = ({
             </Icon>
           )}
         </span>
-        <span style={{ marginTop: "10px" }}>
-          <span className="room-box__temperature">
-            Target temperature: {`${targetTemperature}°C`}
-          </span>
-        </span>
+        <Typography variant="body2" className="room-box__temperature">
+          Target temperature: {`${targetTemperature}°C`}
+        </Typography>
       </div>
     </div>
   );

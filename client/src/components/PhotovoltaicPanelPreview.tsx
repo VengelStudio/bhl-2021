@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Paper } from "@material-ui/core";
+import { Paper, Typography } from "@material-ui/core";
 import {
   ArgumentAxis,
   ValueAxis,
@@ -64,12 +64,16 @@ export const PhotovoltaicPanelPreview: React.FC<PhotovoltaicPanelPreviewProps> =
           />
         </Chart>
       </Paper>
-      <p>{`Current power production: ${
-        Math.round(response.building.panels.efficiency * 10) / 10
-      } kWh`}</p>
-      <p>{`Today generated: ${
-        Math.round(response.building.panels.power_today * 10) / 10
-      } kWh`}</p>
+      <Typography variant="body2">
+        {`Current power production: ${
+          Math.round(response.building.panels.efficiency * 10) / 10
+        } kWh`}
+      </Typography>
+      <Typography variant="body2">
+        {`Today generated: ${
+          Math.round(response.building.panels.power_today * 10) / 10
+        } kWh`}
+      </Typography>
     </div>
   );
 };
