@@ -32,11 +32,11 @@ export const EnergyStatistics: React.FC<EnergyStatisticsProps> = ({
         value: response.building.preview_power_solar,
       },
       {
-        argument: "Power from network",
+        argument: "Power from grid",
         value: response.building.preview_power_from_network,
       },
       {
-        argument: "Power to network",
+        argument: "Power to grid",
         value: response.building.preview_power_to_network,
       },
       {
@@ -49,24 +49,30 @@ export const EnergyStatistics: React.FC<EnergyStatisticsProps> = ({
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <div style={{ width: "66%" }}>
-        <Paper>
+        <Paper elevation={0}>
           <Chart height={200} data={calculatedData}>
             <PieSeries valueField="value" argumentField="argument" />
 
-            <Legend />
+            <Legend position="left" />
 
             <Animation />
           </Chart>
         </Paper>
       </div>
 
-      <div style={{}}>
+      <div
+        style={{
+          marginLeft: "8px",
+          marginTop: "auto",
+          marginBottom: "auto",
+        }}
+      >
         <SingleData
           label="Hot water level"
           value={`${Math.floor((waterData.size / 150) * 100)} %`}
         />
         <SingleData
-          label="Power usage"
+          label="Water heating power"
           value={`${waterData.heating_power} kW`}
         />
 

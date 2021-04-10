@@ -51,7 +51,7 @@ export const PhotovoltaicPanelPreview: React.FC<PhotovoltaicPanelPreviewProps> =
 
   return (
     <div>
-      <Paper style={{ marginTop: "16px" }}>
+      <Paper style={{ marginTop: "16px" }} elevation={0}>
         <Chart height={200} data={calculatedData}>
           <ArgumentAxis tickFormat={format} />
           <ValueAxis labelComponent={ValueLabel} />
