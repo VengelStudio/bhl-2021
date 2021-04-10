@@ -55,6 +55,7 @@ export class Building {
 
   public recalculate(newTime: Date) {
     const sensorData = this.sensors.getValues(newTime);
+    this.solarEnergy(newTime);
 
 // MODE A
 
@@ -69,7 +70,20 @@ export class Building {
           //charging
         }
           }
+// MODE B
+      if (this.powerManager.mode === 'b'){
+        let powerWithSolar = this.getConsumption() - solarEfficiency;
 
+        if(powerWithSolar > 0){
+          powerFromNetworkUsage = powerWithSolar;
+        }
+
+        else{
+          powerGivenToNetwork += Math.abs(powerWithSolar)
+        }
+      }
+
+// MODE C
 
 
     this.rooms.forEach(room => room.setTargetTemperature(getTargetTemperature(newTime)));
@@ -186,7 +200,7 @@ export class Building {
 
 // MODE 1
 
-public solarEnergyForM1(newDate : Date){
+public solarEnergy(newDate : Date){
 
   solarEfficiency  = this.panels.getEfficiency(newDate, this.sensors.outside.clearSkyRatio);    
 }
