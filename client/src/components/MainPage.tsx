@@ -115,10 +115,12 @@ export const MainPage: React.FC = () => {
                   </DevicePanel>
                 </div>
               </div>
-              <ControlPanel
-                value={response.building.powerManager.mode}
-                onChange={onModeChange}
-              />
+              <DevicePanel title="Select mode">
+                <ControlPanel
+                  value={response.building.powerManager.mode}
+                  onChange={onModeChange}
+                />
+              </DevicePanel>
             </div>
           </div>
         ) : (

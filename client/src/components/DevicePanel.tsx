@@ -14,7 +14,7 @@ export const DevicePanel: React.FC<props> = ({
   return (
     <div className="device-panel" style={{ height: "100%" }}>
       <h2 className="device-panel__name">{title}</h2>
-      {children}
+      <div className="device-panel__content">{children}</div>
     </div>
   );
 };

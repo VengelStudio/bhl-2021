@@ -72,6 +72,9 @@ h2 {
     &:last-child {
       margin-bottom: 0;
     }
+    &__content {
+      width: 100%;
+    }
   }
 }
 
@@ -131,7 +134,7 @@ h2 {
   }
 }
 
-.device-panel {
+.device-panel__content {
   box-sizing: border-box;
   padding: 20px;
   box-shadow: $drop-shadow;

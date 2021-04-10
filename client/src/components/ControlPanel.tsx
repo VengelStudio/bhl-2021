@@ -28,104 +28,82 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
   };
 
   return (
-    <div className="control-panel">
-      <h2>Select mode</h2>
-      <div className="control-panel__switches">
-        <FormControl component="fieldset">
-          <RadioGroup
-            name="gender1"
-            value={selectedOption}
-            onChange={handleChange}
-          >
-            <div className="control-panel__cards">
-              <Card>
-                <CardContent>
-                  <FormControlLabel
-                    style={{ minHeight: "42px" }}
-                    value="a"
-                    control={<Radio />}
-                    label="Mode A"
-                  />
+    <FormControl component="fieldset">
+      <RadioGroup name="gender1" value={selectedOption} onChange={handleChange}>
+        <div className="control-panel__cards">
+          <Card>
+            <CardContent>
+              <FormControlLabel
+                style={{ minHeight: "42px" }}
+                value="a"
+                control={<Radio />}
+                label="Mode A"
+              />
 
-                  <Typography variant="body2" component="p">
-                    • PV panels are the first-choice energy source
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    • excess power is used to charge the battery
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    • insufficient power is drawn from the grid
-                  </Typography>
-                </CardContent>
-              </Card>
+              <Typography variant="body2" component="p">
+                • PV panels are the first-choice energy source
+              </Typography>
+              <Typography variant="body2" component="p">
+                • excess power is used to charge the battery
+              </Typography>
+              <Typography variant="body2" component="p">
+                • insufficient power is drawn from the grid
+              </Typography>
+            </CardContent>
+          </Card>
 
-              <Card>
-                <CardContent>
-                  <FormControlLabel
-                    value="b"
-                    control={<Radio />}
-                    label="Mode B"
-                  />
+          <Card>
+            <CardContent>
+              <FormControlLabel value="b" control={<Radio />} label="Mode B" />
 
-                  <Typography variant="body2" component="p">
-                    • PV panels are the first-choice energy source
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    • excess power is sent to the grid
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    • insufficient power is drawn from the grid
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    • battery is not used
-                  </Typography>
-                </CardContent>
-              </Card>
+              <Typography variant="body2" component="p">
+                • PV panels are the first-choice energy source
+              </Typography>
+              <Typography variant="body2" component="p">
+                • excess power is sent to the grid
+              </Typography>
+              <Typography variant="body2" component="p">
+                • insufficient power is drawn from the grid
+              </Typography>
+              <Typography variant="body2" component="p">
+                • battery is not used
+              </Typography>
+            </CardContent>
+          </Card>
 
-              <Card>
-                <CardContent>
-                  <FormControlLabel
-                    value="c"
-                    control={<Radio />}
-                    label="Mode C"
-                  />
+          <Card>
+            <CardContent>
+              <FormControlLabel value="c" control={<Radio />} label="Mode C" />
 
-                  <Typography variant="body2" component="p">
-                    • PV panels are the first-choice energy source
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    • insufficient power is drawn from the grid
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    • excess power is not used
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    • battery is charged from the grid as quickly as possible
-                  </Typography>
-                </CardContent>
-              </Card>
+              <Typography variant="body2" component="p">
+                • PV panels are the first-choice energy source
+              </Typography>
+              <Typography variant="body2" component="p">
+                • insufficient power is drawn from the grid
+              </Typography>
+              <Typography variant="body2" component="p">
+                • excess power is not used
+              </Typography>
+              <Typography variant="body2" component="p">
+                • battery is charged from the grid as quickly as possible
+              </Typography>
+            </CardContent>
+          </Card>
 
-              <Card>
-                <CardContent>
-                  <FormControlLabel
-                    value="d"
-                    control={<Radio />}
-                    label="Mode D"
-                  />
+          <Card>
+            <CardContent>
+              <FormControlLabel value="d" control={<Radio />} label="Mode D" />
 
-                  <Typography variant="body2" component="p">
-                    • PV panels and the battery are the first-choice energy
-                    source
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    • insufficient power is drawn from the grid
-                  </Typography>
-                </CardContent>
-              </Card>
-            </div>
-          </RadioGroup>
-        </FormControl>
-      </div>
-    </div>
+              <Typography variant="body2" component="p">
+                • PV panels and the battery are the first-choice energy source
+              </Typography>
+              <Typography variant="body2" component="p">
+                • insufficient power is drawn from the grid
+              </Typography>
+            </CardContent>
+          </Card>
+        </div>
+      </RadioGroup>
+    </FormControl>
   );
 };
