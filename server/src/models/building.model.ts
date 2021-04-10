@@ -39,7 +39,7 @@ export class Building {
   ];
   public sensors: Sensors = new Sensors();
   public panels: Panels = new Panels();
-  public battery: Battery = new Battery(7, 2);
+  public battery: Battery = new Battery(7, 2, 7);
   public waterStorage: WaterStorage = new WaterStorage();
   public powerExchange: PowerExchange = new PowerExchange();
   public powerManager: PowerManager = new PowerManager();
@@ -56,6 +56,10 @@ export class Building {
   public recalculate(newTime: Date) {
     const sensorData = this.sensors.getValues(newTime);
     this.solarEnergy(newTime);
+    if(this.battery.currentCharge > 0){
+      this.battery.dischargeBattery();
+    }
+    this.battery.calculateBatteryLevel();
 
 // MODE A
 
@@ -67,7 +71,9 @@ export class Building {
         }
 
         else{
-          //charging
+          if(this.battery.currentCharge < this.battery.capacity){
+          this.battery.chargeBattery(Math.abs(powerWithSolar));
+          }
         }
           }
 // MODE B
