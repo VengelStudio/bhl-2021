@@ -66,11 +66,13 @@ export class Building {
 
     if (this.waterStorage.size < 30){
 
+      this.waterStorage.heating_power = 6;
       shouldWaterBeHeated = true;
      
     }
     else if (this.waterStorage.size >= 150) { 
       this.waterStorage.size = 150;
+      this.waterStorage.heating_power = 0;
      shouldWaterBeHeated = false;
     }
 
