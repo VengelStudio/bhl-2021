@@ -15,18 +15,10 @@ export class PowerExchange {
     this.pullDays = pullDays;
   }
 
-
-
-  calculatePushCost(){
+  getTotalCost(){
     this.pushDays.forEach(day => {
-      this.totalCost -= this.getPushCost(day);
-    });
-    return this.totalCost;
-  }
-
-  calcualtePullCost(){
-    this.pullDays.forEach(day => {
       this.totalCost += this.getPullCost(day);
+      this.totalCost -= this.getPushCost(day);
     });
     return this.totalCost;
   }
