@@ -15,6 +15,7 @@ class BuildingRoute implements Route {
     this.router.get(`${this.path}`, this.buildingController.getBuilding);
     this.router.post(`${this.path}/power-manager/mode`, this.buildingController.postPowerManagerMode);
     this.router.post(`${this.path}/power-exchange/days`, this.buildingController.postPowerExchangeDays);
+    this.router.post(`${this.path}/simulation/day`, this.buildingController.postSimulationDay);
   }
 }
 

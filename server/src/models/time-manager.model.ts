@@ -17,6 +17,10 @@ export class TimeManager {
   public getTime() {
     return this.currentTime;
   }
+
+  public setDay(newDay: Date) {
+    this.currentTime = newDay;
+  }
 }
 
 const initialTime: TimeManager = new TimeManager(new Date());

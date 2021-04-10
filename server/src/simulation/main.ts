@@ -17,6 +17,10 @@ export class Simulation {
   public getTimeManager() {
     return this.timeManager;
   }
+
+  public setDay(rawDate: string) {
+    this.timeManager.setDay(new Date(rawDate));
+  }
 }
 
 class SimulationSingleton {
