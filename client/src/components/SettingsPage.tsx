@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { DevicePanel } from "./DevicePanel";
 import { ControlPanel } from "./ControlPanel";
 import { CircularProgress } from "@material-ui/core";
-import DayPicker, { DateUtils } from "react-day-picker";
+import DayPicker, { DateUtils, DayModifiers } from "react-day-picker";
 import "react-day-picker/lib/style.css";
 
 interface SimpleDay {
@@ -47,18 +47,19 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
       });
   };
 
-  // const handleDayClick = (day, { selected }) => {
-  //   const selectedDays = this.state.selectedDays.concat();
-  //   if (selected) {
-  //     const selectedIndex = selectedDays.findIndex(selectedDay =>
-  //       DateUtils.isSameDay(selectedDay, day)
-  //     );
-  //     selectedDays.splice(selectedIndex, 1);
-  //   } else {
-  //     selectedDays.push(day);
-  //   }
-  //   this.setState({ selectedDays });
-  // }
+  const [selectedDays, setSelectedDays] = useState<Date[]>([]);
+
+  const handleDayClick = (day: Date, modifiers: DayModifiers) => {
+    if (modifiers.selected) {
+      setSelectedDays(
+        [...selectedDays].filter(
+          (selectedDay) => !DateUtils.isSameDay(selectedDay, day)
+        )
+      );
+    } else {
+      setSelectedDays([...selectedDays, day]);
+    }
+  };
 
   return (
     <div>
@@ -93,10 +94,10 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
                 <div>
                   <button onClick={onDaysChange}>asdasd</button>
                 </div>
-                {/* <DayPicker
-                  selectedDays={this.state.selectedDays}
-                  onDayClick={this.handleDayClick}
-                /> */}
+                <DayPicker
+                  selectedDays={selectedDays}
+                  onDayClick={handleDayClick}
+                />
               </DevicePanel>
             </div>
           </div>
