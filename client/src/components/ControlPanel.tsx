@@ -8,12 +8,19 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 
-export const ControlPanel: React.FC = () => {
-  const [value, setValue] = useState(); //tu dać pobraną z backendu
+export interface ControlPanelProps {
+  value: "a" | "b" | "c" | "d";
+  onChange: (mode: "a" | "b" | "c" | "d") => void;
+}
 
+export const ControlPanel: React.FC<ControlPanelProps> = ({
+  value,
+  onChange,
+}) => {
   const handleChange = (event: any) => {
-    setValue(event.target.value);
+    onChange(event.target.value);
   };
+
   return (
     <div className="control-panel">
       <h2>Select mode</h2>

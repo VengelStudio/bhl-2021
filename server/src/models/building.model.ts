@@ -2,6 +2,7 @@ import { isBetween } from '../utils/is-between';
 import { Battery } from './battery.model';
 import { Panels } from './panels.model';
 import { PowerExchange } from './power-exchange.model';
+import { PowerManager } from './power-manager.model';
 import { Room } from './room.model';
 import { Sensors } from './sensors.model';
 import { WaterStorage } from './water-storage.model';
@@ -41,6 +42,7 @@ export class Building {
   public battery: Battery = new Battery(7, 2);
   public waterStorage: WaterStorage = new WaterStorage();
   public powerExchange: PowerExchange = new PowerExchange();
+  public powerManager: PowerManager = new PowerManager();
 
   public getConsumption() {
     let powerConsumption = 0;
@@ -58,8 +60,8 @@ export class Building {
 
     this.rooms.forEach(room => room.setTargetTemperature(getTargetTemperature(newTime)));
 
-   // const panelEfficiency = this.panels.getEfficiency(newTime, this.sensors.clearSkyRatio);
-    
+    // const panelEfficiency = this.panels.getEfficiency(newTime, this.sensors.clearSkyRatio);
+
     this.heatRooms();
     this.waterStorage.size -= 1.25;
     console.log("waterBefore: " , this.waterStorage.size)
@@ -88,14 +90,12 @@ export class Building {
 
 
   }
-  
-  public differenceCheck(room: Room){
-      let differenceCheck = room.current_temperature - room.target_temperature
 
-      return differenceCheck < 1 
-  } 
+  public differenceCheck(room: Room) {
+    let differenceCheck = room.current_temperature - room.target_temperature;
 
-
+    return differenceCheck < 1;
+  }
 
   public heatRooms() {
     this.rooms.forEach(room => {this.differenceCheck(room) ? room.is_heated = true : room.is_heated = false});
@@ -117,38 +117,37 @@ export class Building {
 
     let temperatureDecrease = 0;
 
-    switch(true)
-  {
-    case temperature < -20:
-      temperatureDecrease = -(10/15);
-      break;
-    case temperature < -10:
-      temperatureDecrease = -(1/3);
-      break;
+    switch (true) {
+      case temperature < -20:
+        temperatureDecrease = -(10 / 15);
+        break;
+      case temperature < -10:
+        temperatureDecrease = -(1 / 3);
+        break;
 
-    case temperature < -5:
-      temperatureDecrease = -(1/6);
-      break;
+      case temperature < -5:
+        temperatureDecrease = -(1 / 6);
+        break;
 
-    case temperature < 0:
-      temperatureDecrease = -(1/12);
-      break;
+      case temperature < 0:
+        temperatureDecrease = -(1 / 12);
+        break;
 
-    case temperature < 5:
-      temperatureDecrease = -(1/18);
-      break;
-    case temperature < 15:
-      temperatureDecrease = -(1/24);
-      break;
+      case temperature < 5:
+        temperatureDecrease = -(1 / 18);
+        break;
+      case temperature < 15:
+        temperatureDecrease = -(1 / 24);
+        break;
 
-    case temperature < 20:
-      temperatureDecrease = -(1/36);
-      break;
+      case temperature < 20:
+        temperatureDecrease = -(1 / 36);
+        break;
+    }
 
+    return temperatureDecrease;
   }
 
-  return temperatureDecrease;
-  }
   public getRoomWithMinDifference(){
     let differenceArray=[]
     let heatedRooms=[];
