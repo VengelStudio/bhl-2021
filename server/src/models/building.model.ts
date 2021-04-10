@@ -29,13 +29,13 @@ const getTargetTemperature = (time: Date) => {
 
 export class Building {
   public rooms: Room[] = [
-    new Room({ id: 1, heatingPower: 1 }),
-    new Room({ id: 2, heatingPower: 1 }),
-    new Room({ id: 3, heatingPower: 1.5 }),
-    new Room({ id: 4, heatingPower: 1.5 }),
-    new Room({ id: 5, heatingPower: 2 }),
-    new Room({ id: 6, heatingPower: 2 }),
-    new Room({ id: 7, heatingPower: 3 }),
+    new Room({ id: 1, heatingPower: 1, name: 'Kitchen' }),
+    new Room({ id: 2, heatingPower: 1, name: 'Bathroom' }),
+    new Room({ id: 3, heatingPower: 1.5, name: 'Living room' }),
+    new Room({ id: 4, heatingPower: 1.5, name: 'Bedroom' }),
+    new Room({ id: 5, heatingPower: 2, name: 'Guest bedroom' }),
+    new Room({ id: 6, heatingPower: 2, name: 'Dining room' }),
+    new Room({ id: 7, heatingPower: 3, name: 'Utility room' }),
   ];
   public sensors: Sensors = new Sensors();
   public panels: Panels = new Panels();
