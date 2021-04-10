@@ -55,13 +55,20 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
       // if in pushDays
       // move to pull days
 
-      // if in pull days
-      // remove
-      setPushDays(
-        [...pushDays].filter(
-          (selectedDay) => !DateUtils.isSameDay(selectedDay, day)
-        )
-      );
+      if (pushDays.some((pushDay) => DateUtils.isSameDay(pushDay, day))) {
+        setPushDays(
+          [...pushDays].filter(
+            (selectedDay) => !DateUtils.isSameDay(selectedDay, day)
+          )
+        );
+        setPullDays([...pullDays, day]);
+        // if in pull days
+        // remove
+      } else {
+        setPullDays(
+          [...pullDays].filter((pullDay) => !DateUtils.isSameDay(pullDay, day))
+        );
+      }
     } else {
       setPushDays([...pushDays, day]);
     }
@@ -76,14 +83,14 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
   };
 
   const modifiersStyles = {
-    pushModifier: {
-      color: "white",
-      backgroundColor: "#ffc107",
-    },
-    pullModifier: {
-      color: "#ffc107",
-      backgroundColor: "#fffdee",
-    },
+    // pushModifier: {
+    //   color: "white",
+    //   backgroundColor: "#ffc107",
+    // },
+    // pullModifier: {
+    //   color: "#ffc107",
+    //   backgroundColor: "#fffdee",
+    // },
   };
 
   return (
