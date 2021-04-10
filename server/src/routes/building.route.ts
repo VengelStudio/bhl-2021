@@ -13,6 +13,7 @@ class BuildingRoute implements Route {
 
   private initializeRoutes() {
     this.router.get(`${this.path}`, this.buildingController.getBuilding);
+    this.router.post(`${this.path}/power-manager/mode`, this.buildingController.postPowerManagerMode);
   }
 }
 

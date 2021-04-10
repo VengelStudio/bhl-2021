@@ -14,18 +14,30 @@ export const MainPage: React.FC = () => {
       fetch("http://localhost:5000/building", { method: "GET" })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           setResponse(data);
         });
     }, 1000);
   }, []);
+
+  const onModeChange = (mode: "a" | "b" | "c" | "d") => {
+    fetch("http://localhost:5000/building/power-manager/mode", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ mode }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
 
   let temperatureOutside = Math.round(
     response?.building?.sensors?.outside?.temperature
   );
 
   let waterData = response?.building?.waterStorage;
-  console.log(waterData);
 
   return (
     <div>
@@ -84,13 +96,22 @@ export const MainPage: React.FC = () => {
               <div className="devices-wrapper">
                 <div className="device-column">
                   <DevicePanel title="Photovoltaic panels">
-                    <SingleData
-                      label={"Wydajność"}
-                      value={response.building.panels.efficiency}
-                    />
+                    <span>{`Power production: ${response.building.panels.efficiency} kWh`}</span>
                   </DevicePanel>
                   <DevicePanel title="Battery">
-                    <p>chuuuj</p>
+                    <SingleData
+                      label={"Capacity"}
+                      value={response.building.battery.capacity}
+                    />
+                    <br></br>
+                    <SingleData
+                      label={"Current charge level"}
+                      value={`${Math.round(
+                        (response.building.battery.currentCharge /
+                          response.building.battery.capacity) *
+                          100
+                      )}%`}
+                    />
                   </DevicePanel>
                 </div>
                 <div className="water-column">
@@ -99,7 +120,10 @@ export const MainPage: React.FC = () => {
                   </DevicePanel>
                 </div>
               </div>
-              <ControlPanel />
+              <ControlPanel
+                value={response.building.powerManager.mode}
+                onChange={onModeChange}
+              />
             </div>
           </div>
         ) : (

@@ -12,6 +12,16 @@ class BuildingController {
       next(error);
     }
   };
+
+  public postPowerManagerMode = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const simulation: Simulation = SimulationSingleton.getInstance();
+
+    try {
+      res.status(200).json({ mode: simulation.getBuilding().powerManager.setMode(req.body.mode) });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default BuildingController;
