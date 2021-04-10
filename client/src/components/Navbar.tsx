@@ -11,10 +11,12 @@ import Typography from "@material-ui/core/Typography";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
+import DayPicker, { DateUtils, DayModifiers } from "react-day-picker";
 
 export const Navbar: React.FC = () => {
   const [response, setResponse] = useState<any>({});
   const [open, setOpen] = React.useState(false);
+  const [selectedDay, setSelectedDay] = useState<Date | null>(null);
 
   const handleSimulationDateChange = (event: Date) => {
     // setAge(Number(event.target.value) || "");
@@ -75,6 +77,24 @@ export const Navbar: React.FC = () => {
     })} ${date.getUTCFullYear()} ${hours}:${minutes}`;
   };
 
+  const handleDayClick = (day: Date) => {
+    setSelectedDay(day);
+  };
+
+  const handleSave = () => {
+    fetch("http://localhost:5000/building/simulation/day", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ day: selectedDay }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
   return (
     <div className="navbar">
       <div className="navbar__box">
@@ -114,12 +134,19 @@ export const Navbar: React.FC = () => {
         onClose={handleClose}
       >
         <DialogTitle>Set simulation day</DialogTitle>
-        <DialogContent>xdd</DialogContent>
+        <DialogContent>
+          <div style={{ height: "320px" }}>
+            <DayPicker
+              selectedDays={selectedDay ? [selectedDay] : []}
+              onDayClick={handleDayClick}
+            />
+          </div>
+        </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleSave} color="primary">
             Ok
           </Button>
         </DialogActions>
