@@ -22,6 +22,7 @@ export const MainPage: React.FC = () => {
         .then((response) => response.json())
         .then((data) => {
           setResponse(data);
+          console.log(data);
         });
     }, 1000);
   }, []);
@@ -110,11 +111,7 @@ export const MainPage: React.FC = () => {
                       {`Capacity: ${response.building.battery.capacity} kWh`}
                     </Typography>
                     <Typography variant="body2">
-                      {`Charge level: ${`${Math.round(
-                        (response.building.battery.currentCharge /
-                          response.building.battery.capacity) *
-                          100
-                      )}%`}`}
+                      {`Charge level: ${response.building.battery.batteryLevel}%`}
                     </Typography>
                   </DevicePanel>
                 </div>
