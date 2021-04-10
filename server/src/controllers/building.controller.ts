@@ -22,6 +22,18 @@ class BuildingController {
       next(error);
     }
   };
+
+  public postPowerExchangeDays = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const simulation: Simulation = SimulationSingleton.getInstance();
+
+    simulation.getBuilding().powerExchange.setDays(req.body.pushDays, req.body.pullDays);
+
+    try {
+      res.status(200).json({ building: simulation.getBuilding() });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default BuildingController;

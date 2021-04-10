@@ -13,6 +13,12 @@ import {
 } from "@devexpress/dx-react-chart-material-ui";
 import { PhotovoltaicPanelPreview } from "./PhotovoltaicPanelPreview";
 
+interface SimpleDay {
+  day: number;
+  month: number;
+  year: number;
+}
+
 export const MainPage: React.FC = () => {
   const [response, setResponse] = useState<any>({});
 
@@ -41,6 +47,23 @@ export const MainPage: React.FC = () => {
       });
   };
 
+  const onDaysChange = () => {
+    fetch("http://localhost:5000/building/power-exchange/days", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        pushDays: [{ day: 1, month: 1, year: 1 }] as SimpleDay[],
+        pullDays: [{ day: 2, month: 2, year: 2 }] as SimpleDay[],
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
   let temperatureOutside = Math.round(
     response?.building?.sensors?.outside?.temperature
   );
@@ -56,6 +79,7 @@ export const MainPage: React.FC = () => {
 
   return (
     <div>
+      <button onClick={onDaysChange}>asdasd</button>
       <div
         className="page-wrapper"
         style={

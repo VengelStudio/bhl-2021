@@ -9,6 +9,11 @@ export class PowerExchange {
   public pushDays: SimpleDay[] = [];
   public pullDays: SimpleDay[] = [];
 
+  public setDays(pushDays: SimpleDay[], pullDays: SimpleDay[]) {
+    this.pushDays = pushDays;
+    this.pullDays = pullDays;
+  }
+
   getPullCost(time: Date) {
     let energyFromNetworkCost = 0;
     const isWeekend = isBetween(time.getUTCDay() + 1, { a: 6, b: 7 });
