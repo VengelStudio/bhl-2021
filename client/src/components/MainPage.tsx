@@ -85,12 +85,24 @@ export const MainPage: React.FC = () => {
                 <div className="device-column">
                   <DevicePanel title="Photovoltaic panels">
                     <SingleData
-                      label={"Wydajność"}
+                      label={"Efficiency"}
                       value={response.building.panels.efficiency}
                     />
                   </DevicePanel>
                   <DevicePanel title="Battery">
-                    <p>chuuuj</p>
+                    <SingleData
+                      label={"Capacity"}
+                      value={response.building.battery.capacity}
+                    />
+                    <br></br>
+                    <SingleData
+                      label={"Current charge level"}
+                      value={`${Math.round(
+                        (response.building.battery.currentCharge /
+                          response.building.battery.capacity) *
+                          100
+                      )}%`}
+                    />
                   </DevicePanel>
                 </div>
                 <div className="water-column">
