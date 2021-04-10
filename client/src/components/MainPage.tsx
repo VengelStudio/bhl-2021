@@ -77,13 +77,7 @@ export const MainPage: React.FC = () => {
               <DevicePanel title="Room inspect">
                 <HouseInspect data={response} />
               </DevicePanel>
-              <DevicePanel title="Outside parameters">
-                <SingleData
-                  label="Outside temperature"
-                  value={`${temperatureOutside} °C`}
-                />
-                <SingleData label="Cloud coverage:" value={clearSkyRatio} />
-              </DevicePanel>
+
               <DevicePanel title="Water storage">
                 {Object.keys(waterData).map(function (key) {
                   let translatedKey;
@@ -107,6 +101,22 @@ export const MainPage: React.FC = () => {
                   );
                 })}
               </DevicePanel>
+
+              <DevicePanel title="Battery">
+                <SingleData
+                  label={"Capacity"}
+                  value={response.building.battery.capacity}
+                />
+                <br></br>
+                <SingleData
+                  label={"Current charge level"}
+                  value={`${Math.round(
+                    (response.building.battery.currentCharge /
+                      response.building.battery.capacity) *
+                      100
+                  )}%`}
+                />
+              </DevicePanel>
             </div>
             <div className="column">
               <div className="devices-wrapper">
@@ -114,20 +124,12 @@ export const MainPage: React.FC = () => {
                   <DevicePanel title="Photovoltaic panels">
                     <PhotovoltaicPanelPreview response={response} />
                   </DevicePanel>
-                  <DevicePanel title="Battery">
+                  <DevicePanel title="Outside parameters">
                     <SingleData
-                      label={"Capacity"}
-                      value={response.building.battery.capacity}
+                      label="Outside temperature"
+                      value={`${temperatureOutside} °C`}
                     />
-                    <br></br>
-                    <SingleData
-                      label={"Current charge level"}
-                      value={`${Math.round(
-                        (response.building.battery.currentCharge /
-                          response.building.battery.capacity) *
-                          100
-                      )}%`}
-                    />
+                    <SingleData label="Cloud coverage:" value={clearSkyRatio} />
                   </DevicePanel>
                 </div>
               </div>
