@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DevicePanel } from "./DevicePanel";
 import { ControlPanel } from "./ControlPanel";
-import { CircularProgress } from "@material-ui/core";
+import { Button, CircularProgress } from "@material-ui/core";
 import DayPicker, { DateUtils, DayModifiers } from "react-day-picker";
 import "react-day-picker/lib/style.css";
 
@@ -16,6 +16,24 @@ export interface SettingsPageProps {
 }
 
 export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
+  const [pushDays, setPushDays] = useState<Date[]>([]);
+  const [pullDays, setPullDays] = useState<Date[]>([]);
+
+  useEffect(() => {
+    if (response?.building?.powerExchange) {
+      setPushDays(
+        response.building?.powerExchange.pushDays.map(
+          (d: SimpleDay) => new Date(Date.UTC(d.year, d.month, d.day))
+        )
+      );
+      setPullDays(
+        response.building?.powerExchange.pullDays.map(
+          (d: SimpleDay) => new Date(Date.UTC(d.year, d.month, d.day))
+        )
+      );
+    }
+  }, [response]);
+
   const onModeChange = (mode: "a" | "b" | "c" | "d") => {
     fetch("http://localhost:5000/building/power-manager/mode", {
       method: "POST",
@@ -37,8 +55,16 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        pushDays: [{ day: 1, month: 1, year: 1 }] as SimpleDay[],
-        pullDays: [{ day: 2, month: 2, year: 2 }] as SimpleDay[],
+        pushDays: pushDays.map((day) => ({
+          day: day.getUTCDate(),
+          month: day.getUTCMonth(),
+          year: day.getUTCFullYear(),
+        })) as SimpleDay[],
+        pullDays: pullDays.map((day) => ({
+          day: day.getUTCDate(),
+          month: day.getUTCMonth(),
+          year: day.getUTCFullYear(),
+        })) as SimpleDay[],
       }),
     })
       .then((response) => response.json())
@@ -46,9 +72,6 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
         console.log(data);
       });
   };
-
-  const [pushDays, setPushDays] = useState<Date[]>([]);
-  const [pullDays, setPullDays] = useState<Date[]>([]);
 
   const handleDayClick = (day: Date, modifiers: DayModifiers) => {
     if (modifiers.selected) {
@@ -72,6 +95,8 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
     } else {
       setPushDays([...pushDays, day]);
     }
+
+    onDaysChange();
   };
 
   const pushModifier = (day: Date) => {
@@ -112,9 +137,6 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
             </div>
             <div className="column">
               <DevicePanel title="Power exchange days">
-                <div>
-                  <button onClick={onDaysChange}>asdasd</button>
-                </div>
                 <DayPicker
                   selectedDays={[...pushDays, ...pullDays]}
                   onDayClick={handleDayClick}
