@@ -64,7 +64,7 @@ export const PhotovoltaicPanelPreview: React.FC<PhotovoltaicPanelPreviewProps> =
           />
         </Chart>
       </Paper>
-      <Typography variant="body2">
+      <Typography style={{ marginTop: "8px" }} variant="body2">
         {`Current power production: ${
           Math.round(response.building.panels.efficiency * 10) / 10
         } kWh`}
