@@ -82,17 +82,6 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
     return pullDays.some((pullDay) => DateUtils.isSameDay(pullDay, day));
   };
 
-  const modifiersStyles = {
-    // pushModifier: {
-    //   color: "white",
-    //   backgroundColor: "#ffc107",
-    // },
-    // pullModifier: {
-    //   color: "#ffc107",
-    //   backgroundColor: "#fffdee",
-    // },
-  };
-
   return (
     <div>
       <div
@@ -130,7 +119,6 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
                   selectedDays={[...pushDays, ...pullDays]}
                   onDayClick={handleDayClick}
                   modifiers={{ pushModifier, pullModifier }}
-                  modifiersStyles={modifiersStyles}
                 />
               </DevicePanel>
             </div>
