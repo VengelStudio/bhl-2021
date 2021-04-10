@@ -52,7 +52,6 @@ export class Building {
     });
     this.energyConsumption = powerConsumption + additionalEnergyConsumed;
 
-    console.log("power consumption:", powerConsumption + additionalEnergyConsumed);
 
     return powerConsumption + additionalEnergyConsumed;
   }
@@ -154,6 +153,17 @@ export class Building {
     //     newTime,
     //   })),
     // );
+
+    powerConsumptionSum += powerFromNetworkUsage;
+    console.log(powerConsumptionSum);
+    if(tickNumber === 6){
+      hourConsumption = powerConsumptionSum;      
+      console.log("jd:", hourConsumption);
+      tickNumber = 0;
+      powerConsumptionSum = 0;
+
+    }
+    tickNumber++;
   }
 
   public differenceCheck(room: Room) {
@@ -304,5 +314,8 @@ let solarEfficiency = 0;
 let powerFromNetworkUsage = 0;
 let powerGivenToNetwork = 0;
 let additionalEnergyConsumed = 0;
+let hourConsumption = 0;
+let tickNumber = 0;
+let powerConsumptionSum = 0;
 
 export default defaultBuilding;
