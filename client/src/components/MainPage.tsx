@@ -99,7 +99,11 @@ export const MainPage: React.FC = () => {
                   }
                   translate();
                   return (
-                    <SingleData label={translatedKey} value={waterData[key]} />
+                    <SingleData
+                      key={key}
+                      label={translatedKey}
+                      value={waterData[key]}
+                    />
                   );
                 })}
               </DevicePanel>
@@ -108,7 +112,7 @@ export const MainPage: React.FC = () => {
               <div className="devices-wrapper">
                 <div className="device-column">
                   <DevicePanel title="Photovoltaic panels">
-                    <PhotovoltaicPanelPreview data={response.building.panels} />
+                    <PhotovoltaicPanelPreview response={response} />
                   </DevicePanel>
                   <DevicePanel title="Battery">
                     <SingleData
