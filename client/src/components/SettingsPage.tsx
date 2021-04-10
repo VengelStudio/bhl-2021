@@ -55,10 +55,6 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
       });
   };
 
-  // <div>
-  //     <button onClick={onDaysChange}>asdasd</button>
-  //   </div>
-
   return (
     <div>
       <div
@@ -88,11 +84,10 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
               </DevicePanel>
             </div>
             <div className="column">
-              <DevicePanel title="Power management mode">
-                <ControlPanel
-                  value={response.building.powerManager.mode}
-                  onChange={onModeChange}
-                />
+              <DevicePanel title="Power exchange days">
+                <div>
+                  <button onClick={onDaysChange}>asdasd</button>
+                </div>
               </DevicePanel>
             </div>
           </div>
