@@ -16,7 +16,10 @@ export class Battery {
   }
 
   public chargeBattery(energy:number){
-    this.currentCharge += energy;
+    energy > 1 ? this.currentCharge += energy :  this.currentCharge += 1; //to do tego ze jest maksymalne ladowanie 1kwh wezcie sprawdzcie to prosze
+    if(this.currentCharge > this.capacity){
+      this.currentCharge = this.capacity;
+    }
   }
 
   public calculateBatteryLevel(){

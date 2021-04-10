@@ -65,7 +65,6 @@ export class Building {
 
     if(this.powerManager.mode === 'a'){
       let powerWithSolar = this.getConsumption() - solarEfficiency;
-
         if(powerWithSolar > 0){
           powerFromNetworkUsage = powerWithSolar;
         }
@@ -121,11 +120,9 @@ export class Building {
 
     this.heatRooms();
     this.waterStorage.size -= 1.25;
-    console.log('waterBefore: ', this.waterStorage.size);
 
     if (shouldWaterBeHeated) {
       this.waterHeating();
-      console.log('waterStorageAfterRefill: ', this.waterStorage.size);
     }
 
     if (this.waterStorage.size < 30) {
@@ -139,15 +136,15 @@ export class Building {
 
    
 
-    console.table(
-      [0, 1, 2, 3, 4, 5, 6].map(id => ({
-        is_heated: this.rooms[id].is_heated,
-        current_temperature: this.rooms[id].current_temperature,
-        target_temperature: this.rooms[id].target_temperature,
-        differenceCheck: this.differenceCheck(this.rooms[id]),
-        newTime,
-      })),
-    );
+    // console.table(
+    //   [0, 1, 2, 3, 4, 5, 6].map(id => ({
+    //     is_heated: this.rooms[id].is_heated,
+    //     current_temperature: this.rooms[id].current_temperature,
+    //     target_temperature: this.rooms[id].target_temperature,
+    //     differenceCheck: this.differenceCheck(this.rooms[id]),
+    //     newTime,
+    //   })),
+    // );
   }
 
   public differenceCheck(room: Room) {
