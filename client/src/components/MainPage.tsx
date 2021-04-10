@@ -114,11 +114,6 @@ export const MainPage: React.FC = () => {
                     />
                   </DevicePanel>
                 </div>
-                <div className="water-column">
-                  <DevicePanel title="Water">
-                    <p>Water</p>
-                  </DevicePanel>
-                </div>
               </div>
               <ControlPanel
                 value={response.building.powerManager.mode}
