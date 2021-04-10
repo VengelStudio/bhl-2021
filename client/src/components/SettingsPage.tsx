@@ -167,7 +167,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ response }) => {
                     >
                       <p style={{ fontSize: "24px" }}>Total cost</p>
                       <p style={{ fontSize: "24px", margin: "10px 0 0 0" }}>
-                        {cost}
+                        {cost} zł
                       </p>
                     </div>
                   ) : (
