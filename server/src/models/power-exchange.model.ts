@@ -1,6 +1,8 @@
 export class PowerExchange {
   getPullCost(time: Date) {
-    // todo add conditions
+    switch()
+
+
     return 0;
   }
 
