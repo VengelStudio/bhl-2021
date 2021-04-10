@@ -63,7 +63,12 @@ export const Navbar: React.FC = () => {
       </div>
       <Divider orientation="vertical" />
       <p style={{ marginLeft: "20px" }}>
-        Energy consumption: {response.building.energyConsumption}
+        Energy consumption:{" "}
+        {Object.keys(response).length !== 0 ? (
+          <span>{response.building.energyConsumption}</span>
+        ) : (
+          <span>Loading...</span>
+        )}
       </p>
     </div>
   );
