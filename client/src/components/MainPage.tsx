@@ -84,10 +84,7 @@ export const MainPage: React.FC = () => {
               <div className="devices-wrapper">
                 <div className="device-column">
                   <DevicePanel title="Photovoltaic panels">
-                    <SingleData
-                      label={"Efficiency"}
-                      value={response.building.panels.efficiency}
-                    />
+                    <span>{`Power production: ${response.building.panels.efficiency} kWh`}</span>
                   </DevicePanel>
                   <DevicePanel title="Battery">
                     <SingleData
