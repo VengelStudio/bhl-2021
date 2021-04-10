@@ -62,6 +62,9 @@ export const Navbar: React.FC = () => {
         )}
       </div>
       <Divider orientation="vertical" />
+      <p style={{ marginLeft: "20px" }}>
+        Energy consumption: {response.building.energyConsumption}
+      </p>
     </div>
   );
 };

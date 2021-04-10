@@ -11,7 +11,7 @@ export class Battery {
   }
 
   public getEfficiency() {
-    let efficiency = 10;
+    let efficiency = this.maxDischargeRate;
     return efficiency;
   }
 
