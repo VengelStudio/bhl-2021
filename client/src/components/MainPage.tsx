@@ -39,6 +39,13 @@ export const MainPage: React.FC = () => {
 
   let waterData = response?.building?.waterStorage;
 
+  let clearSkyRatio =
+    Object.keys(response).length !== 0
+      ? `${Math.round(
+          (1 - response.building.sensors.outside.clearSkyRatio) * 100
+        )}%`
+      : "Loading..";
+
   return (
     <div>
       <div
@@ -66,8 +73,9 @@ export const MainPage: React.FC = () => {
               <DevicePanel title="Outside parameters">
                 <SingleData
                   label="Outside temperature"
-                  value={`${temperatureOutside} °C` || "<brak>"}
+                  value={`${temperatureOutside} °C`}
                 />
+                <SingleData label="Cloud coverage:" value={clearSkyRatio} />
               </DevicePanel>
               <DevicePanel title="Water storage">
                 {Object.keys(waterData).map(function (key) {

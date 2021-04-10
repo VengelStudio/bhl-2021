@@ -26,13 +26,6 @@ export const Navbar: React.FC = () => {
 
   let dayOfTheWeek = checkDayOfTheWeek(new Date(response.time).getUTCDay());
 
-  let clearSkyRatio =
-    Object.keys(response).length !== 0
-      ? `${Math.round(
-          (1 - response.building.sensors.outside.clearSkyRatio) * 100
-        )}%`
-      : "Loading..";
-
   function checkDayOfTheWeek(day: any) {
     if (day === 0) {
       return "Sunday";
@@ -69,11 +62,6 @@ export const Navbar: React.FC = () => {
         )}
       </div>
       <Divider orientation="vertical" />
-      <div className="navbar__box"></div>
-      <div className="navbar__box">
-        <p>Cloud cover:</p>
-        <p className="navbar__cloud">{clearSkyRatio}</p>
-      </div>
     </div>
   );
 };
