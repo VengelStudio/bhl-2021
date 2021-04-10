@@ -8,6 +8,7 @@ interface props {
   temperature: number;
   targetTemperature: number;
   heating: boolean;
+  tint: string;
 }
 
 export const RoomBox: React.FC<props> = ({
@@ -15,9 +16,10 @@ export const RoomBox: React.FC<props> = ({
   temperature,
   targetTemperature,
   heating,
+  tint,
 }) => {
   return (
-    <div className="room-box">
+    <div className="room-box" style={{ borderColor: tint }}>
       <h5 className="room-box__name">{name}</h5>
       <div
         style={{
