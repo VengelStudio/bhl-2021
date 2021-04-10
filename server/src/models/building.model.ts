@@ -94,7 +94,7 @@ export class Building {
         powerFromNetworkUsage = powerWithSolar;
         this.preview_power_from_network = powerFromNetworkUsage;
       } else {
-        powerGivenToNetwork += Math.abs(powerWithSolar);
+        powerGivenToNetwork = Math.abs(powerWithSolar) < 5 ? Math.abs(powerWithSolar) : 5 ;
       }
 
       this.preview_power_to_network = powerGivenToNetwork;
@@ -131,7 +131,7 @@ export class Building {
         powerFromNetworkUsage = powerWithSolarAndBattery;
         this.preview_power_from_network = powerFromNetworkUsage;
       } else {
-        powerGivenToNetwork += Math.abs(powerWithSolarAndBattery);
+        powerGivenToNetwork = Math.abs(powerWithSolarAndBattery) < 5 ? Math.abs(powerWithSolarAndBattery) : 5;
       }
       this.preview_power_to_network = powerGivenToNetwork;
     }
@@ -171,10 +171,8 @@ export class Building {
     // );
 
     powerConsumptionSum += powerFromNetworkUsage;
-    console.log(powerConsumptionSum);
     if (tickNumber === 6) {
       hourConsumption = powerConsumptionSum;
-      console.log('jd:', hourConsumption);
       tickNumber = 0;
       powerConsumptionSum = 0;
     }
