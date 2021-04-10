@@ -24,8 +24,6 @@ export const MainPage: React.FC<MainPageProps> = ({ response }) => {
     response?.building?.sensors?.outside?.temperature
   );
 
-  let waterData = response?.building?.waterStorage;
-
   let clearSkyRatio =
     Object.keys(response).length !== 0
       ? `${Math.round(
@@ -59,23 +57,9 @@ export const MainPage: React.FC<MainPageProps> = ({ response }) => {
               </DevicePanel>
 
               <div style={{ display: "flex", width: "100%" }}>
-                <div style={{ width: "50%", marginRight: "20px" }}>
-                  <DevicePanel title="Water heater">
-                    <SingleData
-                      label="Hot water level"
-                      value={`${Math.floor((waterData.size / 150) * 100)} %`}
-                    />
-                    <SingleData
-                      label="Power usage"
-                      value={`${waterData.heating_power} kW`}
-                    />
-                  </DevicePanel>
-                </div>
-                <div style={{ width: "50%" }}>
-                  <DevicePanel title="Energy statistics">
-                    <EnergyStatistics response={response}></EnergyStatistics>
-                  </DevicePanel>
-                </div>
+                <DevicePanel title="Energy statistics">
+                  <EnergyStatistics response={response}></EnergyStatistics>
+                </DevicePanel>
               </div>
             </div>
             <div className="column">

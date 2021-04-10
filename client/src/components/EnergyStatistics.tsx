@@ -6,6 +6,7 @@ import {
   Chart,
   PieSeries,
 } from "@devexpress/dx-react-chart-material-ui";
+import { SingleData } from "./SingleData";
 
 export interface EnergyStatisticsProps {
   response: any;
@@ -20,6 +21,8 @@ export const EnergyStatistics: React.FC<EnergyStatisticsProps> = ({
   response,
 }) => {
   const [calculatedData, setCalculatedData] = useState<ChartData[]>([]);
+
+  let waterData = response?.building?.waterStorage;
 
   useEffect(() => {
     setCalculatedData([
@@ -51,6 +54,12 @@ export const EnergyStatistics: React.FC<EnergyStatisticsProps> = ({
           <Legend />
         </Chart>
       </Paper>
+
+      <SingleData
+        label="Hot water level"
+        value={`${Math.floor((waterData.size / 150) * 100)} %`}
+      />
+      <SingleData label="Power usage" value={`${waterData.heating_power} kW`} />
 
       <Typography variant="body2">
         {`Battery charge level: ${response.building.battery.batteryLevel}%`}
