@@ -18,7 +18,7 @@ export const RoomBox: React.FC<props> = ({
 }) => {
   return (
     <div className="room-box">
-      <p className="room-box__name">{name}</p>
+      <h5 className="room-box__name">{name}</h5>
       <div
         style={{
           display: "flex",
