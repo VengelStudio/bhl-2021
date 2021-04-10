@@ -52,9 +52,6 @@ export const PhotovoltaicPanelPreview: React.FC<PhotovoltaicPanelPreviewProps> =
 
   return (
     <div>
-      <span>{`Current power production: ${
-        Math.round(response.building.panels.efficiency * 10) / 10
-      } kWh`}</span>
       <Paper style={{ marginTop: "16px" }}>
         <Chart height={200} data={calculatedData}>
           <ArgumentAxis tickFormat={format} />
@@ -67,6 +64,9 @@ export const PhotovoltaicPanelPreview: React.FC<PhotovoltaicPanelPreviewProps> =
           />
         </Chart>
       </Paper>
+      <p>{`Current power production: ${
+        Math.round(response.building.panels.efficiency * 10) / 10
+      } kWh`}</p>
       <p>{`Today generated: ${
         Math.round(response.building.panels.power_today * 10) / 10
       } kWh`}</p>

@@ -106,19 +106,13 @@ export const MainPage: React.FC = () => {
                 </div>
                 <div style={{ width: "50%" }}>
                   <DevicePanel title="Battery">
-                    <SingleData
-                      label={"Capacity"}
-                      value={response.building.battery.capacity}
-                    />
+                    <span>{`Capacity: ${response.building.battery.capacity} kWh`}</span>
                     <br></br>
-                    <SingleData
-                      label={"Current charge level"}
-                      value={`${Math.round(
-                        (response.building.battery.currentCharge /
-                          response.building.battery.capacity) *
-                          100
-                      )}%`}
-                    />
+                    <span>{`Charge level: ${`${Math.round(
+                      (response.building.battery.currentCharge /
+                        response.building.battery.capacity) *
+                        100
+                    )}%`}`}</span>
                   </DevicePanel>
                 </div>
               </div>
