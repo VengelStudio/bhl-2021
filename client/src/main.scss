@@ -1,4 +1,4 @@
-$drop-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+$drop-shadow: rgba(0, 0, 0, 0.09) 0px 4px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 
 html,
 body {
@@ -68,6 +68,9 @@ h2 {
 }
 
 .device-panel {
+  width: 100%;
+  margin-top: 16px;
+
   &:first-child {
     margin-top: 0;
   }
@@ -80,9 +83,10 @@ h2 {
     box-shadow: $drop-shadow;
     width: 100%;
     border-radius: 8px;
-    margin-top: 8px;
+    margin-top: 4px;
   }
   &__name {
+    margin: 0;
     margin-bottom: 4px;
   }
 }
@@ -106,10 +110,6 @@ h2 {
     grid-template-columns: 1fr 1fr;
     gap: 15px;
   }
-}
-
-.device-panel {
-  width: 100%;
 }
 
 .data-line {
