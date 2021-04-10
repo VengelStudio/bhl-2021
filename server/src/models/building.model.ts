@@ -84,7 +84,30 @@ export class Building {
       }
 
 // MODE C
+      if (this.powerManager.mode === 'c') {
+          let powerWithSolar = this.getConsumption() - solarEfficiency;
+  
+          if(powerWithSolar > 0){
+            powerFromNetworkUsage = powerWithSolar;
+          }
+  
+          else{
+            let batteryCharge = 10 - Math.abs(powerWithSolar);
+          }
+      }
 
+// MODE D
+      if (this.powerManager.mode === 'd'){
+        let powerWithSolarAndBattery = this.getConsumption() - solarEfficiency; //- batteryEfficiency;
+
+        if (powerWithSolarAndBattery > 0){
+          powerFromNetworkUsage = powerWithSolarAndBattery;
+        }
+
+        else{
+          powerGivenToNetwork += Math.abs(powerWithSolarAndBattery);
+        }
+      }
 
     this.rooms.forEach(room => room.setTargetTemperature(getTargetTemperature(newTime)));
 
