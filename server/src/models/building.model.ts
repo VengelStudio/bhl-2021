@@ -1,4 +1,3 @@
-import { isBetween } from '../utils/is-between';
 import { Battery } from './battery.model';
 import { Panels } from './panels.model';
 import { PowerExchange } from './power-exchange.model';
@@ -6,6 +5,7 @@ import { PowerManager } from './power-manager.model';
 import { Room } from './room.model';
 import { Sensors } from './sensors.model';
 import { WaterStorage } from './water-storage.model';
+import { isBetween, isBetweenHours } from '../utils/is-between';
 
 const getTargetTemperature = (time: Date) => {
   const isHoliday = isBetween(time.getUTCMonth() + 1, { a: 7, b: 9 });
@@ -48,16 +48,18 @@ export class Building {
   public getConsumption() {
     let powerConsumption = 0;
     this.rooms.forEach(room => {
-      room.is_heated === true ? (powerConsumption += room.heating_power + this.waterStorage.heating_power ) : '';
+      room.is_heated === true ? (powerConsumption += room.heating_power + this.waterStorage.heating_power + additionalEnergyConsumed) : '';
     });
-    console.log('powerConsumption:', powerConsumption);
     this.energyConsumption = powerConsumption;
+
+
     return powerConsumption;
   }
 
   public recalculate(newTime: Date) {
     const sensorData = this.sensors.getValues(newTime);
     this.solarEnergy(newTime);
+    this.getAdditionalEnergyConsumed(newTime);
     if(this.battery.currentCharge > 0){
       this.battery.dischargeBattery();
     }
@@ -228,6 +230,55 @@ export class Building {
   }
 
 
+  public getAdditionalEnergyConsumed(time: any){
+    const isWeekend = isBetween(time.getUTCDay() + 1, { a: 6, b: 7 });
+    const isHoliday = isBetween(time.getUTCMonth() + 1, { a: 7, b: 9 });
+    const isWorkday = !isWeekend;
+    const hours = time.getUTCHours();
+
+    if(isWorkday){
+      switch(true){
+          case isBetween(hours, { a: 0, b: 4 }):
+            additionalEnergyConsumed = 0.5;
+            break;
+          case isBetween(hours, { a: 5, b: 7 }):
+            additionalEnergyConsumed = 3;
+            break;
+          case isBetween(hours, { a: 8, b: 9 }):
+            additionalEnergyConsumed = 2;
+            break;
+          case isBetween(hours, { a: 10, b: 15 }):
+            additionalEnergyConsumed = 1;
+            break;  
+          case isBetween(hours, { a: 16, b: 19 }):
+            additionalEnergyConsumed = 2;
+            break;  
+          case isBetween(hours, { a: 20, b: 23 }):
+            additionalEnergyConsumed = 1;
+            break;  
+      }
+    }else if (!isWorkday){
+      switch(true){
+        case isBetween(hours, { a: 0, b: 7 }):
+          additionalEnergyConsumed = 0.5;
+          break;
+        case isBetween(hours, { a: 8, b: 11 }):
+          additionalEnergyConsumed = 3;
+          break;
+        case isBetween(hours, { a: 12, b: 16 }):
+          additionalEnergyConsumed = 1;
+          break;
+        case isBetween(hours, { a: 17, b: 23 }):
+          additionalEnergyConsumed = 2;
+          break;  
+      }
+    }else if(isHoliday){
+      additionalEnergyConsumed = 0.5;
+    }
+    console.log('additional energy consumed', additionalEnergyConsumed)
+  }
+
+
 // MODE 1
 
 public solarEnergy(newDate : Date){
@@ -249,5 +300,6 @@ let waterPowerConsumption = 0;
 let solarEfficiency = 0;
 let powerFromNetworkUsage = 0;
 let powerGivenToNetwork = 0;
+let additionalEnergyConsumed = 0;
 
 export default defaultBuilding;
